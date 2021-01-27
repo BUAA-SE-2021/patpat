@@ -2,6 +2,6 @@ mode: "self-judge"
 num: 1
 id: 123456
 name: "hanpi"
-cmd: ["javac Test"]
+cmd: ["cd src", "javac Test"]
 run: ["java Test"]
 test: ["testfile1","testfile2"]

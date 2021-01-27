@@ -15,3 +15,5 @@
 # vendor/
 
 /src
+*.java
+*.class
