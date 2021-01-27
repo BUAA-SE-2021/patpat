@@ -1,2 +1,3 @@
 # patpat
-Auto Judge Script (comparing output with diff)
+
+Auto Judger & Score Uploader for BUAA-OOP Course
