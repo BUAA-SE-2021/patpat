@@ -1,5 +1,4 @@
-mode: "self-judge"
-num: 1
-id: 123456
-name: "hanpi"
-test: ["testfile1","testfile2"]
+num: 1 # 第几次作业
+id: 123456 # 学号
+name: "hanhan" # 姓名
+test: ["testfile1.yaml","testfile2.yaml"] # 可有更多，这是个列表
