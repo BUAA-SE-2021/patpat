@@ -14,6 +14,8 @@
 # Dependency directories (remove the comment below to include it)
 # vendor/
 
-/src
+1-18373722-朱英豪
+jw*.yaml
+*.txt
 *.java
 *.class

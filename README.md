@@ -11,18 +11,19 @@ Auto Judger for BUAA-OOP Course
   - `testfile1.yaml`
   - `testfile2.yaml`
   - ...
-- `1`(第几次作业)-`123456`(学号)-`hanpi`(姓名)
+- `1`(第几次作业)-`18373722`(学号)-`朱英豪`(姓名)
   - src
     - `Test.java` (程序运行的主入口)
     - 其余`*.java`
-  - `judge.yaml` (编写方法见下所述)
+    - (有无`*.class`没有关系，我们会重新编译)
+  - `judge.yaml`
 
 **运行方式：**
 
 在terminal(如cmd)中运行如下命令：
 
 ```bash
-./patpat
+./patpat -judge=1-18373722-朱英豪
 ```
 
 **评测结果：**
@@ -42,7 +43,7 @@ test: ["testfile1.yaml","testfile2.yaml"] # 可有更多，这是个列表
 
 ## 作业提交方式
 
-- `1`(第几次作业)-`123456`(学号)-`hanpi`(姓名)
+- `1`(第几次作业)-`18373722`(学号)-`朱英豪`(姓名)
   - src
     - `Test.java` (程序运行的主入口)
     - 其余`*.java`

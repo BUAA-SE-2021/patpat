@@ -2,49 +2,48 @@ package config
 
 import (
 	"fmt"
-	"log"
+	"io/ioutil"
+	"os"
+	"strconv"
 
 	"gopkg.in/yaml.v2"
 )
 
-var data = `
-cmd: ["echo a", "echo b"]
-test: ["echo 1","echo 2"]
-`
+// var data = `
+// num: 1 # 第几次作业
+// sid: 18373722 # 学号
+// name: "朱英豪" # 姓名
+// test: ["testfile1.yaml","testfile2.yaml"] # 可有更多，这是个列表
+// `
 
 type Config struct {
-	Cmd  []string `yaml:"cmd"`
+	Num  int      `yaml:"num"`
+	Sid  int      `yaml:"sid"`
+	Name string   `yaml:"name"`
 	Test []string `yaml:"test"`
 }
 
-func FetchConfig() {
+func FetchConfig(num string, sid string, name string) (test []string) {
 	t := Config{}
-	err := yaml.Unmarshal([]byte(data), &t)
-	if err != nil {
-		log.Fatalf("error: %v", err)
-	}
-	fmt.Printf("--- t:\n%v\n\n", t)
 
-	d, err := yaml.Marshal(&t)
+	judgeFile := num + "-" + sid + "-" + name
+	fin, err := os.Open(judgeFile + "/" + "judge.yaml")
 	if err != nil {
-		log.Fatalf("error: %v", err)
+		fmt.Println(err)
 	}
-	fmt.Printf("--- t dump:\n%s\n\n", string(d))
-
-	m := make(map[interface{}]interface{})
-
-	err = yaml.Unmarshal([]byte(data), &m)
+	cin, _ := ioutil.ReadAll(fin)
+	err = yaml.Unmarshal([]byte(cin), &t)
 	if err != nil {
-		log.Fatalf("error: %v", err)
+		fmt.Println(err)
 	}
-	fmt.Printf("--- m:\n%v\n\n", m)
 
-	d, err = yaml.Marshal(&m)
-	if err != nil {
-		log.Fatalf("error: %v", err)
+	if num != strconv.Itoa(t.Num) || sid != strconv.Itoa(t.Sid) || name != t.Name {
+		fmt.Println("与judge.yaml中的参数不匹配，请检查配置！")
 	}
-	fmt.Printf("--- m dump:\n%s\n\n", string(d))
-	fmt.Printf("------------------------------\n")
-	fmt.Println(len(t.Cmd))
-	fmt.Println(t.Cmd[0])
+	if len(t.Test) == 0 {
+		fmt.Println("没有测试文件的配置！")
+	}
+
+	test = t.Test
+	return test
 }
