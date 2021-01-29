@@ -34,7 +34,7 @@ func Execute(folderName string, testInput string) {
 
 }
 
-func Run(timeout int, testInput string, command string, args ...string) {
+func RunJava(timeout int, testInput string, command string, args ...string) string {
 
 	// instantiate new command
 	cmd := exec.Command(command, args...)
@@ -83,5 +83,5 @@ func Run(timeout int, testInput string, command string, args ...string) {
 		}
 		fmt.Println("END RUN JAVA")
 	}
-	fmt.Println(buf.String())
+	return buf.String()
 }

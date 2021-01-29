@@ -6,8 +6,8 @@ import (
 	"os/exec"
 )
 
-func Compile(folderName string) {
-	subProcess := exec.Command("javac", folderName+"/src/*.java")
+func CompileJava(command string, args ...string) {
+	subProcess := exec.Command(command, args...)
 	stdin, err := subProcess.StdinPipe()
 	if err != nil {
 		panic(err) //replace with logger, or anything you want

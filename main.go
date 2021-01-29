@@ -20,7 +20,7 @@ func main() {
 	tests := config.FetchConfig(num, sid, name)
 	fmt.Println("Test cases:", tests)
 
-	initialize.Compile(folderName)
-	// initialize.Execute(folderName, "QUIT\n")
-	initialize.Run(2, "SUDO", "java", "-classpath", folderName+"/src", "Test")
+	initialize.CompileJava("javac", folderName+"/src/*.java")
+	outputData := initialize.RunJava(2, "SUDO", "java", "-classpath", folderName+"/src", "Test")
+	fmt.Print(outputData)
 }
