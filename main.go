@@ -21,5 +21,6 @@ func main() {
 	fmt.Println("Test cases:", tests)
 
 	initialize.Compile(folderName)
-	initialize.Execute(folderName, "QUIT\n")
+	// initialize.Execute(folderName, "QUIT\n")
+	initialize.Run(2, "SUDO", "java", "-classpath", folderName+"/src", "Test")
 }
