@@ -8,8 +8,8 @@ Auto Judger for BUAA-OOP Course
 
 - `patpat.exe` (Mac与Linux用户的后缀非exe)
 - `test`
-  - `testfile1.yaml`
-  - `testfile2.yaml`
+  - `testcase1.yaml`
+  - `testcase2.yaml`
   - ...
 - `1`(第几次作业)-`18373722`(学号)-`朱英豪`(姓名)
   - src
@@ -23,12 +23,12 @@ Auto Judger for BUAA-OOP Course
 在terminal(如cmd)中运行如下命令：
 
 ```bash
-./patpat -judge=1-18373722-朱英豪
+./patpat -judge 1-18373722-朱英豪
 ```
 
 **评测结果：**
 
-见生成的`result.md`。（其与该`patpat`程序在同级目录）
+见生成的`result.md`。(其与该`patpat`程序在同级目录)
 
 ## `judge.yaml`的编写
 
@@ -36,10 +36,10 @@ Auto Judger for BUAA-OOP Course
 num: 1 # 第几次作业
 id: 123456 # 学号
 name: "hanhan" # 姓名
-test: ["testfile1.yaml","testfile2.yaml"] # 可有更多，这是个列表
+tests: ["testfile1.yaml","testfile2.yaml"] # 可有更多，这是个列表
 ```
 
-注：在自测时`testfile`的名称，需要与`test`目录下的`testfile`文件名相一致。
+注：在自测时`testcase`的名称，需要与`test`目录下的`testcase`文件名相一致。
 
 ## 作业提交方式
 

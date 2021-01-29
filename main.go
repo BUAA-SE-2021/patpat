@@ -9,17 +9,17 @@ import (
 )
 
 func main() {
-	judgePtr := flag.String("judge", "1-12345-hanhan", "待测文件夹")
+	judgePtr := flag.String("judge", "0-12345-hanhan", "please specify the name of the folder containing Java files to judge")
 	flag.Parse()
 	folderName := *judgePtr
 	tmpParamList := strings.Split(folderName, "-")
 	num := tmpParamList[0]
 	sid := tmpParamList[1]
 	name := tmpParamList[2]
-	fmt.Println("Lab:", num, "学号:", sid, "姓名:", name)
-	test := config.FetchConfig(num, sid, name)
-	fmt.Println("测试文件:", test)
+	fmt.Println("Lab:", num, "SID:", sid, "Name:", name)
+	tests := config.FetchConfig(num, sid, name)
+	fmt.Println("Test cases:", tests)
 
 	initialize.Compile(folderName)
-	initialize.Execute(folderName)
+	initialize.Execute(folderName, "QUIT\n")
 }
