@@ -3,8 +3,10 @@ package main
 import (
 	"flag"
 	"fmt"
+	"io/ioutil"
 	"patpat/config"
 	"patpat/initialize"
+	"patpat/judge"
 	"patpat/util"
 	"strings"
 )
@@ -23,14 +25,19 @@ func main() {
 
 	testName, testData := util.FetchTestCase("test/" + tests[0])
 	fmt.Println(testName)
-	// fmt.Println(testData)
-	testIn := ""
-	for _, v := range testData {
-		testIn = testIn + v[0] + "\n"
-	}
-	fmt.Println(testIn)
+
+	testInputList, testInput, testOutputLines, mapTable := util.ParseData(testData)
 
 	initialize.CompileJava("javac", folderName+"/src/*.java")
-	actualOutput := initialize.RunJava(2, testIn, "java", "-classpath", folderName+"/src", "Test")
-	fmt.Print(actualOutput)
+	actualOutput := initialize.RunJava(2, testInput, "java", "-classpath", folderName+"/src", "Test")
+
+	result, wrongPos := judge.Compare(testOutputLines, actualOutput, mapTable)
+	fmt.Println(result, wrongPos)
+	fmt.Println(len(testInputList), len(mapTable), len(testOutputLines), len(actualOutput))
+
+	content := []byte(actualOutput)
+	if err := ioutil.WriteFile("actualOutput.txt", content, 0644); err != nil {
+		panic(err)
+	}
+
 }

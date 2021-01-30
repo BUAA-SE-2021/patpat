@@ -3,6 +3,7 @@ package util
 import (
 	"io/ioutil"
 	"os"
+	"strings"
 
 	"gopkg.in/yaml.v3"
 )
@@ -12,7 +13,7 @@ type TestCase struct {
 	Data [][]string `yaml:"data"`
 }
 
-func FetchTestCase(addr string) (name string, data [][]string) {
+func FetchTestCase(addr string) (name string, testData *[][]string) {
 	t := TestCase{}
 
 	fin, err := os.Open(addr)
@@ -26,6 +27,43 @@ func FetchTestCase(addr string) (name string, data [][]string) {
 	}
 
 	name = t.Name
-	data = t.Data
-	return name, data
+	testData = &t.Data
+	return name, testData
+}
+
+func ParseData(testData *[][]string) (testInputList []string, testInput string, testOutputLines []string, mapTable []int) {
+	linesInOutput := 0
+	for i, v := range *testData {
+		lenSinglePoint := len(v)
+		if lenSinglePoint == 0 || lenSinglePoint > 2 {
+			panic("Wrong Test Case Format!")
+		}
+		testInputList = append(testInputList, strings.TrimRight(v[0], "\r\n"))
+		if lenSinglePoint == 2 {
+			curOutput := strings.TrimRight(v[1], "\r\n")
+			curOutputLines := strings.Split(curOutput, "\n")
+			for _, s := range curOutputLines {
+				testOutputLines = append(testOutputLines, s)
+				mapTable = append(mapTable, i)
+				linesInOutput++
+			}
+		}
+	}
+
+	testInput = ""
+	for _, v := range testInputList {
+		testInput = testInput + v + "\n"
+	}
+	// fmt.Println(testIn)
+
+	testOutput := ""
+	for _, v := range testOutputLines {
+		testOutput = testOutput + v + "\n"
+	}
+	content := []byte(testOutput)
+	if err := ioutil.WriteFile("testOutput.txt", content, 0644); err != nil {
+		panic(err)
+	}
+
+	return testInputList, testInput, testOutputLines, mapTable
 }
