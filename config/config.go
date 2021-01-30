@@ -5,7 +5,7 @@ import (
 	"os"
 	"strconv"
 
-	"gopkg.in/yaml.v2"
+	"gopkg.in/yaml.v3"
 )
 
 type Config struct {
@@ -30,10 +30,10 @@ func FetchConfig(num string, sid string, name string) (test []string) {
 	}
 
 	if num != strconv.Itoa(t.Num) || sid != strconv.Itoa(t.Sid) || name != t.Name {
-		panic("与judge.yaml中的参数不匹配，请检查配置！")
+		panic("Inconsistent params! Please check your judge.yaml")
 	}
 	if len(t.Tests) == 0 {
-		panic("没有测试文件的配置！")
+		panic("No test cases!")
 	}
 
 	test = t.Tests

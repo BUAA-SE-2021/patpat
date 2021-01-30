@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"patpat/config"
 	"patpat/initialize"
+	"patpat/util"
 	"strings"
 )
 
@@ -20,7 +21,16 @@ func main() {
 	tests := config.FetchConfig(num, sid, name)
 	fmt.Println("Test cases:", tests)
 
+	testName, testData := util.FetchTestCase("test/" + tests[0])
+	fmt.Println(testName)
+	// fmt.Println(testData)
+	testIn := ""
+	for _, v := range testData {
+		testIn = testIn + v[0] + "\n"
+	}
+	fmt.Println(testIn)
+
 	initialize.CompileJava("javac", folderName+"/src/*.java")
-	outputData := initialize.RunJava(2, "SUDO", "java", "-classpath", folderName+"/src", "Test")
-	fmt.Print(outputData)
+	actualOutput := initialize.RunJava(2, testIn, "java", "-classpath", folderName+"/src", "Test")
+	fmt.Print(actualOutput)
 }
