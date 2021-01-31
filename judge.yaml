@@ -1,4 +1,4 @@
 num: 1 # 第几次作业
 sid: 18373722 # 学号
-name: "朱英豪" # 姓名
-tests: ["testcase1.yaml","testcase2.yaml"] # 可有更多，这是个列表
+name: 朱英豪 # 姓名
+tests: [testcase1.yaml, testcase2.yaml] # 可有更多，这是个列表

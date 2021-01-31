@@ -12,7 +12,7 @@ Auto Judger for BUAA-OOP Course
   - `testcase2.yaml`
   - ...
 - `1`(第几次作业)-`18373722`(学号)-`朱英豪`(姓名)
-  - src
+  - `src`
     - `Test.java` (程序运行的主入口)
     - 其余`*.java`
     - (有无`*.class`没有关系，我们会重新编译)
@@ -34,9 +34,9 @@ Auto Judger for BUAA-OOP Course
 
 ```yaml
 num: 1 # 第几次作业
-id: 123456 # 学号
-name: "hanhan" # 姓名
-tests: ["testfile1.yaml","testfile2.yaml"] # 可有更多，这是个列表
+sid: 18373722 # 学号
+name: 朱英豪 # 姓名
+tests: [testcase1.yaml, testcase2.yaml] # 可有更多，这是个列表
 ```
 
 注：在自测时`testcase`的名称，需要与`test`目录下的`testcase`文件名相一致。
