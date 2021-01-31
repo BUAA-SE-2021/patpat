@@ -54,7 +54,7 @@ func ReportGen(reportName string, runStatus int, compareResult int, smallerLen i
 			content += "```\n"
 		}
 	}
-	if err := ioutil.WriteFile(reportName+".md", []byte(content), 0644); err != nil {
+	if err := ioutil.WriteFile(reportName+"_result"+".md", []byte(content), 0644); err != nil {
 		panic(err)
 	}
 }

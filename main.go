@@ -38,7 +38,7 @@ func main() {
 			panic(err)
 		}
 
-		judge.ReportGen(t[0:len(tests[0])-5]+"_result", runStatus, compareResult, smallerLen, wrongOutputPos, testInputList, testOutputLines, actualOutputLines)
+		judge.ReportGen(t[0:len(tests[0])-5], runStatus, compareResult, smallerLen, wrongOutputPos, testInputList, testOutputLines, actualOutputLines)
 	}
 
 }
