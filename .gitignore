@@ -19,3 +19,4 @@ jw*.yaml
 *.txt
 *.java
 *.class
+*_result.md

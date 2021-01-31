@@ -28,7 +28,7 @@ Auto Judger for BUAA-OOP Course
 
 **评测结果：**
 
-见生成的`result.md`。(其与该`patpat`程序在同级目录)
+见生成的`$testcase$_result.md`。(其与该`patpat`程序在同级目录)
 
 ## `judge.yaml`的编写
 
