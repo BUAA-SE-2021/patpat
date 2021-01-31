@@ -20,3 +20,4 @@ jw*.yaml
 *.java
 *.class
 *_result.md
+mysql.yaml

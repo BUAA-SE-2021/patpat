@@ -1,6 +1,10 @@
 package judge
 
-import "io/ioutil"
+import (
+	"io/ioutil"
+	"patpat/global"
+	"patpat/model"
+)
 
 func ReportGen(reportName string, runStatus int, compareResult int, smallerLen int, wrongOutputPos int, testInputList []string, testOutputLines []string, actualOutputLines []string) {
 	content := "# " + reportName + " 评测情况\n\n" + "## 通过情况\n\n"
@@ -57,4 +61,24 @@ func ReportGen(reportName string, runStatus int, compareResult int, smallerLen i
 	if err := ioutil.WriteFile(reportName+"_result"+".md", []byte(content), 0644); err != nil {
 		panic(err)
 	}
+}
+
+func CalcGrade(runStatus int, compareResult int) (result int) {
+	// AC 0
+	// TLE 输出正确 1
+	// WA(TLE) 输出错误 2
+	if runStatus == 0 && compareResult == -3 {
+		result = 0
+	} else if runStatus == 1 && compareResult == -3 {
+		result = 1
+	} else {
+		result = 2
+	}
+	return result
+}
+
+func GradeUpload(num int, sid int, name string, test string, result int) {
+	judgeResult := model.JudgeResultUsual{Num: num, Sid: sid, Name: name, Test: test, Result: result}
+	// fmt.Println(judgeResult)
+	global.DB.Create(&judgeResult)
 }

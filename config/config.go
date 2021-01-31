@@ -3,7 +3,6 @@ package config
 import (
 	"io/ioutil"
 	"os"
-	"strconv"
 
 	"gopkg.in/yaml.v3"
 )
@@ -15,11 +14,9 @@ type Config struct {
 	Tests []string `yaml:"tests"`
 }
 
-func FetchConfig(num string, sid string, name string) (test []string) {
+func FetchConfig(num int, sid int, name string, folderName string) (test []string) {
 	t := Config{}
-
-	judgeFile := num + "-" + sid + "-" + name
-	fin, err := os.Open(judgeFile + "/" + "judge.yaml")
+	fin, err := os.Open(folderName + "/" + "judge.yaml")
 	if err != nil {
 		panic(err)
 	}
@@ -29,7 +26,7 @@ func FetchConfig(num string, sid string, name string) (test []string) {
 		panic(err)
 	}
 
-	if num != strconv.Itoa(t.Num) || sid != strconv.Itoa(t.Sid) || name != t.Name {
+	if num != t.Num || sid != t.Sid || name != t.Name {
 		panic("Inconsistent params! Please check your judge.yaml")
 	}
 	if len(t.Tests) == 0 {
