@@ -29,15 +29,17 @@ func main() {
 	testInputList, testInput, testOutputLines, mapTable := util.ParseData(testData)
 
 	initialize.CompileJava("javac", folderName+"/src/*.java")
-	actualOutput := initialize.RunJava(2, testInput, "java", "-classpath", folderName+"/src", "Test")
+	runStatus, actualOutput, actualOutputLines := initialize.RunJava(2, testInput, "java", "-classpath", folderName+"/src", "Test")
 
-	result, wrongPos := judge.Compare(testOutputLines, actualOutput, mapTable)
-	fmt.Println(result, wrongPos)
-	fmt.Println(len(testInputList), len(mapTable), len(testOutputLines), len(actualOutput))
+	compareResult, smallerLen, wrongOutputPos := judge.Compare(testOutputLines, actualOutputLines, mapTable)
+
+	fmt.Println(compareResult)
+	fmt.Println(runStatus, len(testInputList), len(mapTable), len(testOutputLines), len(actualOutput))
 
 	content := []byte(actualOutput)
 	if err := ioutil.WriteFile("actualOutput.txt", content, 0644); err != nil {
 		panic(err)
 	}
 
+	judge.ReportGen(tests[0][0:len(tests[0])-5], runStatus, compareResult, smallerLen, wrongOutputPos, testInputList, testOutputLines, actualOutputLines)
 }

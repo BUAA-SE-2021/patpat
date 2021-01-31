@@ -6,6 +6,7 @@ import (
 	"io"
 	"os"
 	"os/exec"
+	"strings"
 	"time"
 )
 
@@ -34,9 +35,9 @@ func Execute(folderName string, testInput string) {
 
 }
 
-func RunJava(timeout int, testInput string, command string, args ...string) string {
-
+func RunJava(timeout int, testInput string, command string, args ...string) (int, string, []string) {
 	// instantiate new command
+	runStatus := 0
 	cmd := exec.Command(command, args...)
 	// get pipe to standard output
 	stdout, err := cmd.StdoutPipe()
@@ -76,6 +77,7 @@ func RunJava(timeout int, testInput string, command string, args ...string) stri
 			panic("failed to kill: " + err.Error())
 		}
 		fmt.Println("timeout reached, process killed")
+		runStatus = 1 //TLE
 	case err := <-done:
 		if err != nil {
 			close(done)
@@ -83,5 +85,7 @@ func RunJava(timeout int, testInput string, command string, args ...string) stri
 		}
 		fmt.Println("END RUN JAVA")
 	}
-	return buf.String()
+	actualOutput := buf.String()
+	actualOutputLines := strings.Split(strings.TrimRight(actualOutput, "\r\n"), "\n")
+	return runStatus, actualOutput, actualOutputLines
 }
