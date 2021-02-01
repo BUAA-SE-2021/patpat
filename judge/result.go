@@ -84,3 +84,8 @@ func GradeUpload(num int, sid int, name string, test string, result int) {
 	// fmt.Println(judgeResult)
 	global.DB.Create(&judgeResult)
 }
+
+func GradeUploadFormal(num int, sid int, name string, test string, result int, tag string) {
+	judgeResult := model.JudgeResultFormal{Num: num, Sid: sid, Name: name, Test: test, Result: result, Tag: tag}
+	global.DB.Create(&judgeResult)
+}

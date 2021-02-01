@@ -23,7 +23,7 @@ Auto Judger for BUAA-OOP Course
 在terminal(如cmd)中运行如下命令：
 
 ```bash
-./patpat -judge 1-18373722-朱英豪
+./patpat stu -judge 1-18373722-朱英豪 # 请修改为自己的相关信息
 ```
 
 **评测结果：**

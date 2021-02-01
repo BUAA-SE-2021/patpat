@@ -17,4 +17,5 @@ type JudgeResultFormal struct {
 	Name   string `gorm:"type:varchar(255)" json:"name"`
 	Test   string `gorm:"type:varchar(255)" json:"test"`
 	Result int    `json:"result"`
+	Tag    string `gorm:"type:varchar(255)" json:"tag"`
 }
