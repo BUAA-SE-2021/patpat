@@ -22,3 +22,4 @@ testcase*.yaml
 *_result.md
 mysql.yaml
 .vscode
+bin
