@@ -18,12 +18,18 @@ func main() {
 
 	stuCmd := flag.NewFlagSet("stu", flag.ExitOnError)
 	judgePtr := stuCmd.String("judge", "0-12345-hanhan", "Please specify the name of the folder containing Java files to judge.")
+
 	taCmd := flag.NewFlagSet("ta", flag.ExitOnError)
 	taJudgePtr := taCmd.String("judge", "0-12345-hanhan", "Please specify the name of the folder containing Java files to judge.")
 	tagPtr := taCmd.String("tag", "test", "Tag for this judge.")
+
 	regCmd := flag.NewFlagSet("reg", flag.ExitOnError)
 	regSidPtr := regCmd.Int("sid", 123456, "Please specify your SID.")
 	regPwdPtr := regCmd.String("pwd", "888888", "Please enter your password.")
+
+	queCmd := flag.NewFlagSet("query", flag.ExitOnError)
+	queSidPtr := queCmd.Int("sid", 123456, "Please specify your SID.")
+	quePwdPtr := queCmd.String("pwd", "888888", "Please enter your password.")
 
 	switch os.Args[1] {
 	case "stu":
@@ -84,8 +90,15 @@ func main() {
 		pwd := *regPwdPtr
 		result := v1.Register(sid, pwd)
 		fmt.Println(result)
-
+	case "query":
+		queCmd.Parse(os.Args[2:])
+		sid := *queSidPtr
+		pwd := *quePwdPtr
+		if v1.Login(sid, pwd) {
+			result := v1.QueryResult(sid)
+			fmt.Print(result)
+		}
 	default:
-		fmt.Println("Expected 'stu' subcommands!")
+		fmt.Println("Expected 'stu' or 'reg' or 'query' subcommands!")
 	}
 }
