@@ -31,7 +31,7 @@ func FetchTestCase(addr string) (name string, testData *[][]string) {
 	return name, testData
 }
 
-func ParseData(testData *[][]string) (testInputList []string, testInput string, testOutputLines []string, mapTable []int) {
+func ParseData(testData *[][]string) (testInputList []string, testInput string, testOutputLines []string, testOutput string, mapTable []int) {
 	linesInOutput := 0
 	for i, v := range *testData {
 		lenSinglePoint := len(v)
@@ -49,21 +49,13 @@ func ParseData(testData *[][]string) (testInputList []string, testInput string, 
 			}
 		}
 	}
-
 	testInput = ""
 	for _, v := range testInputList {
 		testInput = testInput + v + "\n"
 	}
-	// fmt.Println(testIn)
-
-	testOutput := ""
+	testOutput = ""
 	for _, v := range testOutputLines {
 		testOutput = testOutput + v + "\n"
 	}
-	content := []byte(testOutput)
-	if err := ioutil.WriteFile("testOutput.txt", content, 0644); err != nil {
-		panic(err)
-	}
-
-	return testInputList, testInput, testOutputLines, mapTable
+	return testInputList, testInput, testOutputLines, testOutput, mapTable
 }

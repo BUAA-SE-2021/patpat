@@ -6,7 +6,7 @@ import (
 	"patpat/model"
 )
 
-func ReportGen(reportName string, runStatus int, compareResult int, smallerLen int, wrongOutputPos int, testInputList []string, testOutputLines []string, actualOutputLines []string) {
+func ReportGen(reportName string, runStatus int, compareResult int, smallerLen int, wrongOutputPos int, testInputList []string, testOutputLines []string, actualOutputLines []string, testOutput string, actualOutput string) {
 	content := "# " + reportName + " 评测情况\n\n" + "## 通过情况\n\n"
 	if runStatus == 0 && compareResult == -3 {
 		content += "Congratulations, AC!\n"
@@ -39,11 +39,11 @@ func ReportGen(reportName string, runStatus int, compareResult int, smallerLen i
 			}
 			content += "```\n\n"
 		} else {
-			content += "### 期望输出\n\n```java\n" + testOutputLines[wrongOutputPos] + "\n```\n\n"
-			content += "### 实际输出\n\n```java\n" + actualOutputLines[wrongOutputPos] + "\n```\n\n"
+			content += "### 期望输出行\n\n```java\n" + testOutputLines[wrongOutputPos] + "\n```\n\n"
+			content += "### 实际输出行\n\n```java\n" + actualOutputLines[wrongOutputPos] + "\n```\n\n"
 		}
 
-		content += "## 请复制以下行辅助调试\n\n```java\n"
+		content += "## 请复制以下行辅助调试\n\n注：由于可能存在某些命令无输出，所以定位不一定完全准确\n\n```java\n\n"
 		if compareResult == -1 || compareResult == -2 {
 			for _, v := range testInputList {
 				content += v + "\n"
@@ -58,6 +58,8 @@ func ReportGen(reportName string, runStatus int, compareResult int, smallerLen i
 			content += "```\n"
 		}
 	}
+	content += "\n## 更多信息\n\n### 完整期望输出\n\n```java\n" + testOutput + "```\n\n"
+	content += "### 完整实际输出\n\n```java\n" + actualOutput + "```\n"
 	if err := ioutil.WriteFile(reportName+"_result"+".md", []byte(content), 0644); err != nil {
 		panic(err)
 	}

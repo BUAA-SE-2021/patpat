@@ -21,3 +21,4 @@ jw*.yaml
 *.class
 *_result.md
 mysql.yaml
+test/judge.yaml

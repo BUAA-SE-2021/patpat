@@ -8,6 +8,7 @@ Auto Judger for BUAA-OOP Course
 
 - `patpat.exe` (Mac与Linux用户的后缀非exe)
 - `test`
+  - `judge.yaml` (用于告知评测机需要测哪些测试用例)
   - `testcase1.yaml`
   - `testcase2.yaml`
   - ...
@@ -16,7 +17,6 @@ Auto Judger for BUAA-OOP Course
     - `Test.java` (程序运行的主入口)
     - 其余`*.java`
     - (有无`*.class`没有关系，我们会重新编译)
-  - `judge.yaml`
 
 **运行方式：**
 
@@ -33,10 +33,8 @@ Auto Judger for BUAA-OOP Course
 ## `judge.yaml`的编写
 
 ```yaml
-num: 1 # 第几次作业
-sid: 18373722 # 学号
-name: 朱英豪 # 姓名
 tests: [testcase1.yaml, testcase2.yaml] # 可有更多，这是个列表
+# 请将本judge.yaml置于test文件夹内
 ```
 
 注：在自测时`testcase`的名称，需要与`test`目录下的`testcase`文件名相一致。
@@ -47,8 +45,7 @@ tests: [testcase1.yaml, testcase2.yaml] # 可有更多，这是个列表
   - src
     - `Test.java` (程序运行的主入口)
     - 其余`*.java`
-  - `judge.yaml`
 
 将上述文件夹压缩为`zip`格式后，上传至云平台。
 
-注：文件夹名称与`judge.yaml`请务必填写正确且保持一致，如不一致将无法评测。
+注：请务必反复确认文件的命名，如有误将无法评测。

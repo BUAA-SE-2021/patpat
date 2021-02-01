@@ -7,16 +7,16 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-type Config struct {
+type JudgeConfig struct {
 	Num   int      `yaml:"num"`
 	Sid   int      `yaml:"sid"`
 	Name  string   `yaml:"name"`
 	Tests []string `yaml:"tests"`
 }
 
-func FetchConfig(num int, sid int, name string, folderName string) (test []string) {
-	t := Config{}
-	fin, err := os.Open(folderName + "/" + "judge.yaml")
+func FetchJudgeConfig(configAddr string) (tests []string) {
+	t := JudgeConfig{}
+	fin, err := os.Open(configAddr)
 	if err != nil {
 		panic(err)
 	}
@@ -26,13 +26,10 @@ func FetchConfig(num int, sid int, name string, folderName string) (test []strin
 		panic(err)
 	}
 
-	if num != t.Num || sid != t.Sid || name != t.Name {
-		panic("Inconsistent params! Please check your judge.yaml")
-	}
 	if len(t.Tests) == 0 {
 		panic("No test cases!")
 	}
 
-	test = t.Tests
-	return test
+	tests = t.Tests
+	return tests
 }
