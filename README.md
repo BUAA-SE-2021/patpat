@@ -1,6 +1,6 @@
 # patpat
 
-Auto Judger for BUAA-OOP Course
+Auto Judger for BUAA-SE-OOP Course (2021 Spring)
 
 ## 如何使用
 
