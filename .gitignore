@@ -15,11 +15,10 @@
 # vendor/
 
 1-18373722-朱英豪
-jw*.yaml
+testcase*.yaml
 *.txt
 *.java
 *.class
 *_result.md
 mysql.yaml
-test/judge.yaml
 .vscode

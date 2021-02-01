@@ -1,2 +1,2 @@
 tests: [testcase1.yaml, testcase2.yaml] # 可有更多，这是个列表
-# 请将本judge.yaml置于test文件夹内
+# 本judge.yaml置于test目录下
