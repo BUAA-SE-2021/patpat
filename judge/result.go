@@ -43,7 +43,7 @@ func ReportGen(reportName string, runStatus int, compareResult int, smallerLen i
 			content += "### 实际输出行\n\n```java\n" + actualOutputLines[wrongOutputPos] + "\n```\n\n"
 		}
 
-		content += "## 请复制以下行辅助调试\n\n注：由于可能存在某些命令无输出，所以定位不一定完全准确\n\n```java\n\n"
+		content += "## 请复制以下行辅助调试\n\n注：由于可能存在某些命令无输出，所以定位不一定完全准确\n\n```java\n"
 		if compareResult == -1 || compareResult == -2 {
 			for _, v := range testInputList {
 				content += v + "\n"

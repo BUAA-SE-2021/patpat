@@ -28,7 +28,7 @@ func Register(sid int, pwd string) (result string) {
 		if err := global.DB.Create(&user).Error; err != nil {
 			panic(err)
 		}
-		result = "Success."
+		result = "Registration Success."
 	} else {
 		result = "Fail. Account has been registered or an unexpected error occurred."
 	}
