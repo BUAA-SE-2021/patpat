@@ -2,7 +2,7 @@
 
 Auto Judger for BUAA-SE-OOP Course (2021 Spring)
 
-## 如何使用
+## 评测机使用方法
 
 ### 自评
 
@@ -56,7 +56,7 @@ tests: [testcase1.yaml, testcase2.yaml] # 可有更多，这是个列表
 
 注：在自测时`testcase`的名称，需要与`test`目录下的`testcase`文件名相一致。
 
-## 作业提交方式
+### 作业提交方式
 
 - `1`(第几次作业)-`18373722`(学号)-`朱英豪`(姓名)
   - src
@@ -113,7 +113,7 @@ data:
 # 有且仅有这3种情况，即data的数据类型为[n][2]string
 ```
 
-### 贡献项目
+## 如何贡献项目
 
 - 发现Bug——提Issue
 - 贡献测试数据——提Pull Request
