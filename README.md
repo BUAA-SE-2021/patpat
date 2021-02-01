@@ -4,6 +4,8 @@ Auto Judger for BUAA-OOP Course
 
 ## 如何使用
 
+### 自评
+
 请**严格按照**如下的目录层级与命名准备好待测文件：
 
 - `patpat.exe` (Mac与Linux用户的后缀非exe)
@@ -18,17 +20,32 @@ Auto Judger for BUAA-OOP Course
     - 其余`*.java`
     - (有无`*.class`没有关系，我们会重新编译)
 
-**运行方式：**
-
-在terminal(如cmd)中运行如下命令：
+**运行方式：**在terminal(如cmd)中运行如下命令：
 
 ```bash
 ./patpat stu -judge 1-18373722-朱英豪 # 请修改为自己的相关信息
 ```
 
-**评测结果：**
+**评测结果：**见生成的`$testcase$_result.md`。(其与该`patpat`程序在同级目录)
 
-见生成的`$testcase$_result.md`。(其与该`patpat`程序在同级目录)
+### 查询助教评测结果
+
+- 首先需要注册账号 (sid为您的学号)
+
+```bash
+./patpat reg -sid your_sid -pwd your_password
+# 如./patpat reg -sid 18373722 -pwd buaa-se-oop
+```
+
+注：账号创建后，密码**不支持修改**。如需修改，请联系我。
+
+- 查询命令：
+
+```bash
+./patpat query -sid your_sid -pwd your_password
+```
+
+学号及对应的密码正确后即可显示截至到目前的所有评测结果。
 
 ## `judge.yaml`的编写
 
@@ -48,4 +65,4 @@ tests: [testcase1.yaml, testcase2.yaml] # 可有更多，这是个列表
 
 将上述文件夹压缩为`zip`格式后，上传至云平台。
 
-注：请务必反复确认文件的命名，如有误将无法评测。
+注：请务必**反复确认**文件的命名，如有误将无法评测。
