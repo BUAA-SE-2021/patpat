@@ -44,5 +44,6 @@ func InitMySQL() {
 	global.DB.Set("gorm:table_options", "ENGINE=InnoDB").AutoMigrate(
 		&model.JudgeResultUsual{},
 		&model.JudgeResultFormal{},
+		&model.User{},
 	)
 }

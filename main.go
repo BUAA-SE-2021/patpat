@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	v1 "patpat/api/v1"
 	"patpat/config"
 	"patpat/initialize"
 	"patpat/judge"
@@ -16,25 +17,28 @@ func main() {
 	initialize.InitMySQL()
 
 	stuCmd := flag.NewFlagSet("stu", flag.ExitOnError)
-	judgePtr := stuCmd.String("judge", "0-12345-hanhan", "Please specify the name of the folder containing Java files to judge")
+	judgePtr := stuCmd.String("judge", "0-12345-hanhan", "Please specify the name of the folder containing Java files to judge.")
 	taCmd := flag.NewFlagSet("ta", flag.ExitOnError)
-	taJudgePtr := taCmd.String("judge", "0-12345-hanhan", "Please specify the name of the folder containing Java files to judge")
-	tagPtr := taCmd.String("tag", "test", "tag for this judge")
+	taJudgePtr := taCmd.String("judge", "0-12345-hanhan", "Please specify the name of the folder containing Java files to judge.")
+	tagPtr := taCmd.String("tag", "test", "Tag for this judge.")
+	regCmd := flag.NewFlagSet("reg", flag.ExitOnError)
+	regSidPtr := regCmd.Int("sid", 123456, "Please specify your SID.")
+	regPwdPtr := regCmd.String("pwd", "888888", "Please enter your password.")
 
 	switch os.Args[1] {
 	case "stu":
 		stuCmd.Parse(os.Args[2:])
 		folderName := *judgePtr
-		tmpParamList := strings.Split(folderName, "-")
-		num, err := strconv.Atoi(tmpParamList[0])
+		paramList := strings.Split(folderName, "-")
+		num, err := strconv.Atoi(paramList[0])
 		if err != nil {
 			panic("Cannot parse num!")
 		}
-		sid, err := strconv.Atoi(tmpParamList[1])
+		sid, err := strconv.Atoi(paramList[1])
 		if err != nil {
 			panic("Cannot parse sid!")
 		}
-		name := tmpParamList[2]
+		name := paramList[2]
 		fmt.Println("Lab:", num, "SID:", sid, "Name:", name)
 		tests := config.FetchJudgeConfig("test/judge.yaml")
 		fmt.Println("Test cases:", tests)
@@ -51,16 +55,16 @@ func main() {
 	case "ta":
 		taCmd.Parse(os.Args[2:])
 		folderName := *taJudgePtr
-		tmpParamList := strings.Split(folderName, "-")
-		num, err := strconv.Atoi(tmpParamList[0])
+		paramList := strings.Split(folderName, "-")
+		num, err := strconv.Atoi(paramList[0])
 		if err != nil {
 			panic("Cannot parse num!")
 		}
-		sid, err := strconv.Atoi(tmpParamList[1])
+		sid, err := strconv.Atoi(paramList[1])
 		if err != nil {
 			panic("Cannot parse sid!")
 		}
-		name := tmpParamList[2]
+		name := paramList[2]
 		fmt.Println("Lab:", num, "SID:", sid, "Name:", name)
 		tests := config.FetchJudgeConfig("test/judge.yaml")
 		fmt.Println("Test cases:", tests)
@@ -74,7 +78,14 @@ func main() {
 			// judge.ReportGen(t[0:len(tests[0])-5], runStatus, compareResult, smallerLen, wrongOutputPos, testInputList, testOutputLines, actualOutputLines, testOutput, actualOutput)
 			judge.GradeUploadFormal(num, sid, name, t, judge.CalcGrade(runStatus, compareResult), *tagPtr)
 		}
+	case "reg":
+		regCmd.Parse(os.Args[2:])
+		sid := *regSidPtr
+		pwd := *regPwdPtr
+		result := v1.Register(sid, pwd)
+		fmt.Println(result)
+
 	default:
-		fmt.Println("expected 'stu' subcommands!")
+		fmt.Println("Expected 'stu' subcommands!")
 	}
 }
