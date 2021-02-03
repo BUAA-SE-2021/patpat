@@ -112,12 +112,14 @@ database: xxx
 
 交叉编译：
 
-```go
+```bash
 env GOOS=windows GOARCH=amd64 go build -o bin/patpat-windows-64.exe main.go
 env GOOS=linux GOARCH=amd64 go build -o bin/patpat-linux-64 main.go
 env GOOS=darwin GOARCH=amd64 go build -o bin/patpat-macos-64 main.go
 # 以上均为64位程序
 ```
+
+注：一键交叉编译可使用`make`，`Makefile`已在项目中给出。
 
 ### 测试文件编写
 
