@@ -4,6 +4,35 @@ Auto Judger for BUAA-SE-OOP Course (2021 Spring)
 
 ## 评测机使用方法
 
+### 一些准备工作
+
+#### 解决编码问题
+
+统一使用UTF-8编码。对于Windows系统，其默认编码为GBK，在此需要作修改。
+
+修改方式：添加系统环境变量`JAVA_TOOL_OPTIONS`，将其设置为`-Dfile.encoding=UTF-8`。
+
+修改后，至terminal中运行`java -version`命令，应可查看到如下类似输出：
+
+```java
+Picked up JAVA_TOOL_OPTIONS: -Dfile.encoding=UTF-8
+java version "15" 2020-09-15
+Java(TM) SE Runtime Environment (build 15+36-1562)
+Java HotSpot(TM) 64-Bit Server VM (build 15+36-1562, mixed mode, sharing)
+```
+
+#### 自检编译和执行命令
+
+评测机使用的编译命令与执行命令：
+
+```bash
+javac folderName/src/*.java # 编译
+java -classpath folderName/src Test # 执行
+# folderName为1-123456-hanhan含有学号姓名等信息的文件夹名，在后续会具体说明各字段含义。
+```
+
+注：评测机环境使用Oracle JDK 15。
+
 ### 自评
 
 请**严格按照**如下的目录层级与命名准备好待测文件：
