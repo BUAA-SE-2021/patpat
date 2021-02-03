@@ -31,7 +31,7 @@ java -classpath folderName/src Test # 执行
 # folderName为1-123456-hanhan含有学号姓名等信息的文件夹名，在后续会具体说明各字段含义。
 ```
 
-注：评测机环境使用Windows环境下的Oracle JDK 15。
+注：评测机环境使用Windows下的Oracle JDK 15。
 
 ### 自评
 
