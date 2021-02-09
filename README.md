@@ -4,6 +4,10 @@ Auto Judger for BUAA-SE-OOP Course (2021 Spring)
 
 ## 评测机使用方法
 
+### 下载评测机
+
+见GitHub中的Releases，下载对应版本即可。目前支持Windows, Linux, MacOS(Intel架构)
+
 ### 一些准备工作
 
 #### 解决编码问题
