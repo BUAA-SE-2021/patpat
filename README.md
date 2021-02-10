@@ -55,6 +55,8 @@ java -classpath folderName/src Test # 执行
 
 **运行方式:** 在terminal(如cmd)中运行如下命令：
 
+注：对于Mac与Linux用户，需要首先`chmod +x patpat`，使评测机程序具有可执行权限。
+
 ```bash
 ./patpat stu -judge 1-18373722-朱英豪 # 请修改为自己的相关信息
 ```
