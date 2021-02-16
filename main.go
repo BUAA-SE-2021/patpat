@@ -48,15 +48,22 @@ func main() {
 		fmt.Println("Lab:", num, "SID:", sid, "Name:", name)
 		tests := config.FetchJudgeConfig("test/judge.yaml")
 		fmt.Println("Test cases:", tests)
-		for _, t := range tests {
-			testName, testData := util.FetchTestCase("test/" + t)
-			fmt.Println(testName)
-			testInputList, testInput, testOutputLines, testOutput, mapTable := util.ParseData(testData)
-			initialize.CompileJava("javac", folderName+"/src/*.java")
-			runStatus, actualOutput, actualOutputLines := initialize.RunJava(2, testInput, "java", "-classpath", folderName+"/src", "Test")
-			compareResult, smallerLen, wrongOutputPos := judge.Compare(testOutputLines, actualOutputLines, mapTable)
-			judge.ReportGen(t[0:len(tests[0])-5], runStatus, compareResult, smallerLen, wrongOutputPos, testInputList, testOutputLines, actualOutputLines, testOutput, actualOutput)
-			judge.GradeUpload(num, sid, name, t, judge.CalcGrade(runStatus, compareResult))
+		// initialize.CompileJava("javac", folderName+"/src/*.java")
+		exitCode := initialize.RunCommand("javac", folderName+"/src/*.java")
+		if exitCode != 0 {
+			fmt.Println("Compile Error!")
+			judge.GradeUpload(num, sid, name, "testcase", -1)
+		} else {
+			for _, t := range tests {
+				testName, testData := util.FetchTestCase("test/" + t)
+				fmt.Println(testName)
+				testInputList, testInput, testOutputLines, testOutput, mapTable := util.ParseData(testData)
+
+				runStatus, actualOutput, actualOutputLines := initialize.RunJava(2, testInput, "java", "-classpath", folderName+"/src", "Test")
+				compareResult, smallerLen, wrongOutputPos := judge.Compare(testOutputLines, actualOutputLines, mapTable)
+				judge.ReportGen(t[0:len(tests[0])-5], runStatus, compareResult, smallerLen, wrongOutputPos, testInputList, testOutputLines, actualOutputLines, testOutput, actualOutput)
+				judge.GradeUpload(num, sid, name, t, judge.CalcGrade(runStatus, compareResult))
+			}
 		}
 	case "ta":
 		taCmd.Parse(os.Args[2:])
@@ -74,15 +81,19 @@ func main() {
 		fmt.Println("Lab:", num, "SID:", sid, "Name:", name)
 		tests := config.FetchJudgeConfig("test/judge.yaml")
 		fmt.Println("Test cases:", tests)
-		for _, t := range tests {
-			testName, testData := util.FetchTestCase("test/" + t)
-			fmt.Println(testName)
-			_, testInput, testOutputLines, _, mapTable := util.ParseData(testData)
-			initialize.CompileJava("javac", strconv.Itoa(num)+"/"+folderName+"/src/*.java")
-			runStatus, _, actualOutputLines := initialize.RunJava(2, testInput, "java", "-classpath", strconv.Itoa(num)+"/"+folderName+"/src", "Test")
-			compareResult, _, _ := judge.Compare(testOutputLines, actualOutputLines, mapTable)
-			// judge.ReportGen(t[0:len(tests[0])-5], runStatus, compareResult, smallerLen, wrongOutputPos, testInputList, testOutputLines, actualOutputLines, testOutput, actualOutput)
-			judge.GradeUploadFormal(num, sid, name, t, judge.CalcGrade(runStatus, compareResult), *tagPtr)
+		exitCode := initialize.RunCommand("javac", strconv.Itoa(num)+"/"+folderName+"/src/*.java")
+		if exitCode != 0 {
+			fmt.Println("Compile Error!")
+			judge.GradeUploadFormal(num, sid, name, "testcase", -1, *tagPtr)
+		} else {
+			for _, t := range tests {
+				testName, testData := util.FetchTestCase("test/" + t)
+				fmt.Println(testName)
+				_, testInput, testOutputLines, _, mapTable := util.ParseData(testData)
+				runStatus, _, actualOutputLines := initialize.RunJava(2, testInput, "java", "-classpath", strconv.Itoa(num)+"/"+folderName+"/src", "Test")
+				compareResult, _, _ := judge.Compare(testOutputLines, actualOutputLines, mapTable)
+				judge.GradeUploadFormal(num, sid, name, t, judge.CalcGrade(runStatus, compareResult), *tagPtr)
+			}
 		}
 	case "reg":
 		regCmd.Parse(os.Args[2:])
