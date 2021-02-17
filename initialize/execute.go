@@ -77,7 +77,7 @@ func RunJava(timeout int, testInput string, command string, args ...string) (int
 			panic("failed to kill: " + err.Error())
 		}
 		fmt.Println("timeout reached, process killed")
-		runStatus = 1 //TLE
+		runStatus = 1 // TLE
 	case err := <-done:
 		if err != nil {
 			close(done)
