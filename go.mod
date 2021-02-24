@@ -1,6 +1,6 @@
 module patpat
 
-go 1.15
+go 1.16
 
 require (
 	github.com/kr/text v0.2.0 // indirect
