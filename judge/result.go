@@ -1,7 +1,7 @@
 package judge
 
 import (
-	"io/ioutil"
+	"os"
 	"patpat/global"
 	"patpat/model"
 )
@@ -60,7 +60,7 @@ func ReportGen(reportName string, runStatus int, compareResult int, smallerLen i
 	}
 	content += "\n## 更多信息\n\n### 完整期望输出\n\n```java\n" + testOutput + "```\n\n"
 	content += "### 完整实际输出\n\n```java\n" + actualOutput + "```\n"
-	if err := ioutil.WriteFile(reportName+"_result"+".md", []byte(content), 0644); err != nil {
+	if err := os.WriteFile(reportName+"_result"+".md", []byte(content), 0644); err != nil {
 		panic(err)
 	}
 }

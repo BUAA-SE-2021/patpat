@@ -1,7 +1,7 @@
 package util
 
 import (
-	"io/ioutil"
+	"io"
 	"os"
 	"strings"
 
@@ -20,7 +20,7 @@ func FetchTestCase(addr string) (name string, testData *[][]string) {
 	if err != nil {
 		panic(err)
 	}
-	cin, _ := ioutil.ReadAll(fin)
+	cin, _ := io.ReadAll(fin)
 	err = yaml.Unmarshal([]byte(cin), &t)
 	if err != nil {
 		panic(err)

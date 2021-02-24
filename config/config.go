@@ -1,7 +1,7 @@
 package config
 
 import (
-	"io/ioutil"
+	"io"
 	"os"
 
 	"gopkg.in/yaml.v3"
@@ -20,7 +20,7 @@ func FetchJudgeConfig(configAddr string) (tests []string) {
 	if err != nil {
 		panic(err)
 	}
-	cin, _ := ioutil.ReadAll(fin)
+	cin, _ := io.ReadAll(fin)
 	err = yaml.Unmarshal([]byte(cin), &t)
 	if err != nil {
 		panic(err)
