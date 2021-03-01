@@ -10,7 +10,11 @@ Auto Judger for BUAA-SE-OOP Course (2021 Spring)
 
 见GitHub中的Releases，下载对应版本即可。目前提供Windows, Linux, MacOS(Intel架构)的可执行文件。如有ARM架构版本的需要或程序无法正常运行，请联系我解决。
 
-#### 解决编码问题
+
+
+<!-- #### 解决编码问题
+
+**仍需确定解决方案！**
 
 统一使用UTF-8编码。对于Windows系统，其默认编码为GBK，在此需要作修改。
 
@@ -23,7 +27,7 @@ Picked up JAVA_TOOL_OPTIONS: -Dfile.encoding=UTF-8
 java version "15" 2020-09-15
 Java(TM) SE Runtime Environment (build 15+36-1562)
 Java HotSpot(TM) 64-Bit Server VM (build 15+36-1562, mixed mode, sharing)
-```
+``` -->
 
 #### 自检编译和执行命令
 
