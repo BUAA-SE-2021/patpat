@@ -8,26 +8,17 @@ Auto Judger for BUAA-SE-OOP Course (2021 Spring)
 
 #### 下载评测机
 
-见GitHub中的Releases，下载对应版本即可。目前提供Windows, Linux, MacOS(Intel架构)的可执行文件。如有ARM架构版本的需要或程序无法正常运行，请联系我解决。
+见 GitHub 中的 Releases，下载对应版本即可。目前提供 Windows, Linux, MacOS(Intel 架构)的可执行文件。如有 ARM 架构版本的需要或程序无法正常运行，请联系我解决。
 
+#### 统一编码
 
+统一使用 UTF-8 编码。
 
-<!-- #### 解决编码问题
+请确认你的程序能通过如下命令成功编译！
 
-**仍需确定解决方案！**
-
-统一使用UTF-8编码。对于Windows系统，其默认编码为GBK，在此需要作修改。
-
-修改方式：添加系统环境变量`JAVA_TOOL_OPTIONS`，将其设置为`-Dfile.encoding=UTF-8`。
-
-修改后，至terminal中运行`java -version`命令，应可查看到如下类似输出：
-
-```java
-Picked up JAVA_TOOL_OPTIONS: -Dfile.encoding=UTF-8
-java version "15" 2020-09-15
-Java(TM) SE Runtime Environment (build 15+36-1562)
-Java HotSpot(TM) 64-Bit Server VM (build 15+36-1562, mixed mode, sharing)
-``` -->
+```bash
+javac -encoding UTF-8 1-18373722-朱英豪/src/*.java # 请修改为自己的相关信息
+```
 
 #### 自检编译和执行命令
 
@@ -39,13 +30,13 @@ java -classpath folderName/src Test # 执行
 # folderName为1-123456-hanhan含有学号姓名等信息的文件夹名，在后续会具体说明各字段含义。
 ```
 
-注：评测机环境使用Windows下的Oracle JDK 15。
+注：评测机环境使用 Windows 下的 Oracle JDK 15。
 
 ### 自评
 
 请**严格按照**如下的目录层级与命名准备好待测文件：
 
-- `patpat.exe` (Mac与Linux用户的程序无后缀)
+- `patpat.exe` (Mac 与 Linux 用户的程序无后缀)
 - `test`
   - `judge.yaml` (用于告知评测机需要测哪些测试用例，编写方法见下)
   - `testcase1.yaml`
@@ -57,9 +48,9 @@ java -classpath folderName/src Test # 执行
     - 其余`*.java`
     - (有无`*.class`没有关系，评测机会重新编译)
 
-**运行方式:** 在terminal(如cmd)中运行如下命令：
+**运行方式:** 在 terminal(如 cmd)中运行如下命令：
 
-注：对于Mac与Linux用户，需要首先`chmod +x patpat`，使评测机程序具有可执行权限。
+注：对于 Mac 与 Linux 用户，需要首先`chmod +x patpat`，使评测机程序具有可执行权限。
 
 ```bash
 ./patpat stu -judge 1-18373722-朱英豪 # 请修改为自己的相关信息
@@ -69,7 +60,7 @@ java -classpath folderName/src Test # 执行
 
 ### 查询助教评测结果
 
-- 首先需要注册账号 (sid为您的学号)
+- 首先需要注册账号 (sid 为您的学号)
 
 ```bash
 ./patpat reg -sid your_sid -pwd your_password
@@ -131,25 +122,26 @@ database: xxx
 ```yaml
 name: testcase
 data:
-- # 单行输入，无输出
-  - SUDO
-- # 单行输入，单行输出
-  - nc hh12345678 oop6324 [10086,10001] 1 [1-16]2,3
-  - Course add illegal.
-- # 单行输入，多行输出
-  - myc 1 1000
-  - |
-    Page:1
-    1.CID:bh00000002,Name:oop6326,Teachers:[A,B,10086],Capacity:1/100,Time:[1-10]1,5
-    2.CID:bh00000004,Name:oop6328,Teachers:[A,B],Capacity:1/100,Time:[11-18]1,5
-    3.CID:bh00000005,Name:oop6329,Teachers:[A,B],Capacity:1/100,Time:[1-18]1,6
-    n-next page, l-last page, q-quit
+  - # 单行输入，无输出
+    - SUDO
+  - # 单行输入，单行输出
+    - nc hh12345678 oop6324 [10086,10001] 1 [1-16]2,3
+    - Course add illegal.
+  - # 单行输入，多行输出
+    - myc 1 1000
+    - |
+      Page:1
+      1.CID:bh00000002,Name:oop6326,Teachers:[A,B,10086],Capacity:1/100,Time:[1-10]1,5
+      2.CID:bh00000004,Name:oop6328,Teachers:[A,B],Capacity:1/100,Time:[11-18]1,5
+      3.CID:bh00000005,Name:oop6329,Teachers:[A,B],Capacity:1/100,Time:[1-18]1,6
+      n-next page, l-last page, q-quit
+
 # 有且仅有这3种情况，即data的数据类型为[n][2]string
 ```
 
 ## 如何贡献项目
 
-- 发现Bug——提Issue
-- 贡献测试数据——提Pull Request
-- 为了时刻了解是否有新的测试样例，请Watch和Star该项目
-- Plus，欢迎Follow我，谢谢！
+- 发现 Bug——提 Issue
+- 贡献测试数据——提 Pull Request
+- 为了时刻了解是否有新的测试样例，请 Watch 和 Star 该项目
+- Plus，欢迎 Follow 我，谢谢！

@@ -49,7 +49,7 @@ func main() {
 		tests := config.FetchJudgeConfig("test/judge.yaml")
 		fmt.Println("Test cases:", tests)
 		// initialize.CompileJava("javac", folderName+"/src/*.java")
-		exitCode := initialize.RunCommand("javac", folderName+"/src/*.java")
+		exitCode := initialize.RunCommand("javac", "-encoding", "UTF-8", folderName+"/src/*.java")
 		if exitCode != 0 {
 			fmt.Println("Compile Error!")
 			judge.GradeUpload(num, sid, name, "testcase", -1)
@@ -81,7 +81,7 @@ func main() {
 		fmt.Println("Lab:", num, "SID:", sid, "Name:", name)
 		tests := config.FetchJudgeConfig("test/judge.yaml")
 		fmt.Println("Test cases:", tests)
-		exitCode := initialize.RunCommand("javac", strconv.Itoa(num)+"/"+folderName+"/src/*.java")
+		exitCode := initialize.RunCommand("javac", "-encoding", "UTF-8", strconv.Itoa(num)+"/"+folderName+"/src/*.java")
 		if exitCode != 0 {
 			fmt.Println("Compile Error!")
 			judge.GradeUploadFormal(num, sid, name, "testcase", -1, *tagPtr)
