@@ -66,15 +66,15 @@ func ReportGen(reportName string, runStatus int, compareResult int, smallerLen i
 }
 
 func CalcGrade(runStatus int, compareResult int) (result int) {
-	// AC 0
-	// TLE 输出正确 1
-	// WA(TLE) 输出错误 2
+	// AC 完全正确 1
+	// TLE 超时 -1
+	// WA 输出错误 -2
 	if runStatus == 0 && compareResult == -3 {
-		result = 0
-	} else if runStatus == 1 && compareResult == -3 {
 		result = 1
+	} else if runStatus == 1 {
+		result = -1
 	} else {
-		result = 2
+		result = -2
 	}
 	return result
 }

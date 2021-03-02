@@ -52,7 +52,7 @@ func main() {
 		exitCode := initialize.RunCommand("javac", "-encoding", "UTF-8", folderName+"/src/*.java")
 		if exitCode != 0 {
 			fmt.Println("Compile Error!")
-			judge.GradeUpload(num, sid, name, "testcase", -1)
+			judge.GradeUpload(num, sid, name, "testcase", -3)
 		} else {
 			for _, t := range tests {
 				testName, testData := util.FetchTestCase("test/" + t)
@@ -84,7 +84,7 @@ func main() {
 		exitCode := initialize.RunCommand("javac", "-encoding", "UTF-8", strconv.Itoa(num)+"/"+folderName+"/src/*.java")
 		if exitCode != 0 {
 			fmt.Println("Compile Error!")
-			judge.GradeUploadFormal(num, sid, name, "testcase", -1, *tagPtr)
+			judge.GradeUploadFormal(num, sid, name, "testcase", -3, *tagPtr)
 		} else {
 			for _, t := range tests {
 				testName, testData := util.FetchTestCase("test/" + t)
