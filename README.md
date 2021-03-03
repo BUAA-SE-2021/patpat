@@ -2,15 +2,15 @@
 
 Auto Judger for BUAA-SE-OOP Course (2021 Spring)
 
-## 评测机使用方法
+## 1. 评测机使用方法
 
-### 一些准备工作
+### 1.1. 一些准备工作
 
-#### 下载评测机
+#### 1.1.1. 下载评测机
 
 见 GitHub 中的 Releases，下载对应版本即可。目前提供 Windows, Linux, MacOS(Intel 架构)的可执行文件。如有 ARM 架构版本的需要或程序无法正常运行，请联系我解决。
 
-#### 统一编码
+#### 1.1.2. 统一编码
 
 统一使用 UTF-8 编码。
 
@@ -20,7 +20,7 @@ Auto Judger for BUAA-SE-OOP Course (2021 Spring)
 javac -encoding UTF-8 1-18373722-朱英豪/src/*.java # 请修改为自己的相关信息
 ```
 
-#### 自检编译和执行命令
+#### 1.1.3. 自检编译和执行命令
 
 评测机使用的编译命令与执行命令：
 
@@ -32,7 +32,7 @@ java -classpath folderName/src Test # 执行
 
 注：评测机环境使用 Windows 下的 Oracle JDK 15。
 
-### 自评
+### 1.2. 自评
 
 请**严格按照**如下的目录层级与命名准备好待测文件：
 
@@ -48,7 +48,7 @@ java -classpath folderName/src Test # 执行
     - 其余`*.java`
     - (有无`*.class`没有关系，评测机会重新编译)
 
-**运行方式:** 在 terminal(如 cmd)中运行如下命令：
+**运行方式:** 在 terminal(如 PowerShell)中运行如下命令：
 
 注：对于 Mac 与 Linux 用户，需要首先`chmod +x patpat`，使评测机程序具有可执行权限。
 
@@ -58,7 +58,7 @@ java -classpath folderName/src Test # 执行
 
 **评测结果:** 见生成的`$testcase$_result.md`。(其与该`patpat`程序在同级目录)
 
-### 查询助教评测结果
+### 1.3. 查询助教评测结果
 
 - 首先需要注册账号 (sid 为您的学号)
 
@@ -77,7 +77,7 @@ java -classpath folderName/src Test # 执行
 
 学号及对应的密码正确后即可显示截至到目前的所有评测结果。
 
-### `judge.yaml`的编写
+### 1.4. `judge.yaml`的编写
 
 ```yaml
 tests: [testcase1.yaml, testcase2.yaml] # 可有更多，这是个列表
@@ -86,7 +86,7 @@ tests: [testcase1.yaml, testcase2.yaml] # 可有更多，这是个列表
 
 注：在自测时`testcase`的名称，需要与`test`目录下的`testcase`文件名相一致。
 
-### 作业提交方式
+## 2. 作业提交方式
 
 - `1`(第几次作业)-`18373722`(学号)-`朱英豪`(姓名)
   - src
@@ -97,9 +97,9 @@ tests: [testcase1.yaml, testcase2.yaml] # 可有更多，这是个列表
 
 注：请务必**反复确认**文件的命名，如有误将无法评测。
 
-## 开发者指南
+## 3. 开发者指南
 
-### 编译项目
+### 3.1. 编译项目
 
 数据库的配置在`mysql.yaml`中，参考如下：
 
@@ -115,7 +115,7 @@ database: xxx
 
 见`Makefile`。一键交叉编译可使用`make`。
 
-### 测试文件编写
+### 3.2. 测试文件编写
 
 样例：
 
@@ -139,7 +139,7 @@ data:
 # 有且仅有这3种情况，即data的数据类型为[n][2]string
 ```
 
-## 如何贡献项目
+## 4. 如何贡献项目
 
 - 发现 Bug——提 Issue
 - 贡献测试数据——提 Pull Request
