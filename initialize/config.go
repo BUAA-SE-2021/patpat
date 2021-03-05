@@ -1,4 +1,4 @@
-package util
+package initialize
 
 import (
 	"io"
@@ -8,9 +8,44 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
+type JudgeConfig struct {
+	Num   int      `yaml:"num"`
+	Sid   int      `yaml:"sid"`
+	Name  string   `yaml:"name"`
+	Tests []string `yaml:"tests"`
+}
+
 type TestCase struct {
 	Name string     `yaml:"name"`
 	Data [][]string `yaml:"data"`
+}
+
+type MySQLConfig struct {
+	Host     string `yaml:"host"`
+	Port     string `yaml:"port"`
+	Username string `yaml:"username"`
+	Password string `yaml:"password"`
+	Database string `yaml:"database"`
+}
+
+func FetchJudgeConfig(configAddr string) (tests []string) {
+	t := JudgeConfig{}
+	fin, err := os.Open(configAddr)
+	if err != nil {
+		panic(err)
+	}
+	cin, _ := io.ReadAll(fin)
+	err = yaml.Unmarshal([]byte(cin), &t)
+	if err != nil {
+		panic(err)
+	}
+
+	if len(t.Tests) == 0 {
+		panic("No test cases!")
+	}
+
+	tests = t.Tests
+	return tests
 }
 
 func FetchTestCase(addr string) (name string, testData *[][]string) {
@@ -31,7 +66,7 @@ func FetchTestCase(addr string) (name string, testData *[][]string) {
 	return name, testData
 }
 
-func ParseData(testData *[][]string) (testInputList []string, testInput string, testOutputLines []string, testOutput string, mapTable []int) {
+func ParseTestData(testData *[][]string) (testInputList []string, testInput string, testOutputLines []string, testOutput string, mapTable []int) {
 	linesInOutput := 0
 	for i, v := range *testData {
 		lenSinglePoint := len(v)
@@ -58,4 +93,18 @@ func ParseData(testData *[][]string) (testInputList []string, testInput string, 
 		testOutput = testOutput + v + "\n"
 	}
 	return testInputList, testInput, testOutputLines, testOutput, mapTable
+}
+
+func FetchMySQLConfig() (host string, port string, username string, password string, db string) {
+	t := MySQLConfig{}
+	fin, err := os.Open("mysql.yaml")
+	if err != nil {
+		panic(err)
+	}
+	cin, _ := io.ReadAll(fin)
+	err = yaml.Unmarshal([]byte(cin), &t)
+	if err != nil {
+		panic(err)
+	}
+	return t.Host, t.Port, t.Username, t.Password, t.Database
 }

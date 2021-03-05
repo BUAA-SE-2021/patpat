@@ -5,10 +5,9 @@ import (
 	"fmt"
 	"os"
 	v1 "patpat/api/v1"
-	"patpat/config"
 	"patpat/initialize"
 	"patpat/judge"
-	"patpat/util"
+	"patpat/run"
 	"strconv"
 	"strings"
 )
@@ -46,20 +45,20 @@ func main() {
 		}
 		name := paramList[2]
 		fmt.Println("Lab:", num, "SID:", sid, "Name:", name)
-		tests := config.FetchJudgeConfig("test/judge.yaml")
+		tests := initialize.FetchJudgeConfig("test/judge.yaml")
 		fmt.Println("Test cases:", tests)
-		// initialize.CompileJava("javac", folderName+"/src/*.java")
-		exitCode := initialize.RunCommand("javac", "-encoding", "UTF-8", folderName+"/src/*.java")
+
+		exitCode := run.CompileJava("javac", "-encoding", "UTF-8", folderName+"/src/*.java")
 		if exitCode != 0 {
 			fmt.Println("Compile Error!")
 			judge.GradeUpload(num, sid, name, "testcase", -3)
 		} else {
 			for _, t := range tests {
-				testName, testData := util.FetchTestCase("test/" + t)
+				testName, testData := initialize.FetchTestCase("test/" + t)
 				fmt.Println(testName)
-				testInputList, testInput, testOutputLines, testOutput, mapTable := util.ParseData(testData)
+				testInputList, testInput, testOutputLines, testOutput, mapTable := initialize.ParseTestData(testData)
 
-				runStatus, actualOutput, actualOutputLines := initialize.RunJava(2, testInput, "java", "-classpath", folderName+"/src", "Test")
+				runStatus, actualOutput, actualOutputLines := run.RunJava(2, testInput, "java", "-classpath", folderName+"/src", "Test")
 				compareResult, smallerLen, wrongOutputPos := judge.Compare(testOutputLines, actualOutputLines, mapTable)
 				judge.ReportGen(t[0:len(tests[0])-5], runStatus, compareResult, smallerLen, wrongOutputPos, testInputList, testOutputLines, actualOutputLines, testOutput, actualOutput)
 				judge.GradeUpload(num, sid, name, t, judge.CalcGrade(runStatus, compareResult))
@@ -79,18 +78,18 @@ func main() {
 		}
 		name := paramList[2]
 		fmt.Println("Lab:", num, "SID:", sid, "Name:", name)
-		tests := config.FetchJudgeConfig("test/judge.yaml")
+		tests := initialize.FetchJudgeConfig("test/judge.yaml")
 		fmt.Println("Test cases:", tests)
-		exitCode := initialize.RunCommand("javac", "-encoding", "UTF-8", strconv.Itoa(num)+"/"+folderName+"/src/*.java")
+		exitCode := run.CompileJava("javac", "-encoding", "UTF-8", strconv.Itoa(num)+"/"+folderName+"/src/*.java")
 		if exitCode != 0 {
 			fmt.Println("Compile Error!")
 			judge.GradeUploadFormal(num, sid, name, "testcase", -3, *tagPtr)
 		} else {
 			for _, t := range tests {
-				testName, testData := util.FetchTestCase("test/" + t)
+				testName, testData := initialize.FetchTestCase("test/" + t)
 				fmt.Println(testName)
-				_, testInput, testOutputLines, _, mapTable := util.ParseData(testData)
-				runStatus, _, actualOutputLines := initialize.RunJava(2, testInput, "java", "-classpath", strconv.Itoa(num)+"/"+folderName+"/src", "Test")
+				_, testInput, testOutputLines, _, mapTable := initialize.ParseTestData(testData)
+				runStatus, _, actualOutputLines := run.RunJava(2, testInput, "java", "-classpath", strconv.Itoa(num)+"/"+folderName+"/src", "Test")
 				compareResult, _, _ := judge.Compare(testOutputLines, actualOutputLines, mapTable)
 				judge.GradeUploadFormal(num, sid, name, t, judge.CalcGrade(runStatus, compareResult), *tagPtr)
 			}

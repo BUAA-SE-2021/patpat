@@ -1,33 +1,15 @@
-package initialize
+package run
 
 import (
 	"bytes"
 	"fmt"
 	"log"
-	"os"
 	"os/exec"
 	"strings"
 	"syscall"
 )
 
-func CompileJava(command string, args ...string) {
-	subProcess := exec.Command(command, args...)
-	stdin, err := subProcess.StdinPipe()
-	if err != nil {
-		panic(err) // replace with logger, or anything you want
-	}
-	defer stdin.Close() // the doc says subProcess. Wait will close it, but I'm not sure, so I kept this line
-	subProcess.Stdout = os.Stdout
-	subProcess.Stderr = os.Stderr
-	fmt.Println("START COMPILE")
-	if err = subProcess.Start(); err != nil { // Use start, not run
-		panic(err) // replace with logger, or anything you want
-	}
-	subProcess.Wait()
-	fmt.Println("END COMPILE")
-}
-
-func RunCommand(name string, args ...string) (exitCode int) {
+func CompileJava(name string, args ...string) (exitCode int) {
 	// log.Println("run command:", name, args)
 	var outBuf, errBuf bytes.Buffer
 	cmd := exec.Command(name, args...)
