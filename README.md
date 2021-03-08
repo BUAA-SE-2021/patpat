@@ -25,7 +25,7 @@ javac -encoding UTF-8 1-18373722-朱英豪/src/*.java # 请修改为自己的相
 评测机使用的编译命令与执行命令：
 
 ```bash
-javac folderName/src/*.java # 编译
+javac -encoding UTF-8 folderName/src/*.java # 编译
 java -classpath folderName/src Test # 执行
 # folderName为1-123456-hanhan含有学号姓名等信息的文件夹名，在后续会具体说明各字段含义。
 ```
