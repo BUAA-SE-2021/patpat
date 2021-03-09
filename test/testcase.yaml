@@ -1,0 +1,15 @@
+name: testcase
+data:
+  - # 单行输入，无输出
+    - SUDO
+  - # 单行输入，单行输出
+    - nc hh12345678 oop6324 [10086,10001] 1 [1-16]2,3
+    - Course add illegal.
+  - # 单行输入，多行输出
+    - myc 1 1000
+    - |
+      Page:1
+      1.CID:bh00000002,Name:oop6326,Teachers:[A,B,10086],Capacity:1/100,Time:[1-10]1,5
+      2.CID:bh00000004,Name:oop6328,Teachers:[A,B],Capacity:1/100,Time:[11-18]1,5
+      3.CID:bh00000005,Name:oop6329,Teachers:[A,B],Capacity:1/100,Time:[1-18]1,6
+      n-next page, l-last page, q-quit

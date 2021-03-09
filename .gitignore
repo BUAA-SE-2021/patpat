@@ -15,7 +15,7 @@
 # vendor/
 
 1-18373722-朱英豪
-testcase*.yaml
+# testcase*.yaml
 *.txt
 *.java
 *.class
