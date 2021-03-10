@@ -135,8 +135,23 @@ data:
       2.CID:bh00000004,Name:oop6328,Teachers:[A,B],Capacity:1/100,Time:[11-18]1,5
       3.CID:bh00000005,Name:oop6329,Teachers:[A,B],Capacity:1/100,Time:[1-18]1,6
       n-next page, l-last page, q-quit
+  - # 多行输入，无输出
+    - |
+      quit
+      quit again
+      quit quit
+  - # 多行输入，一行输出
+    - |
+      quit
+      quit again
+      QUIT
+    - ----- Good Bye! -----
+  # 多行输入，多行输出，类比以上写法，不建议使用。
 
-# 有且仅有这3种情况，即data的数据类型为[n][2]string
+# 这里 data 部分的数据类型为 [n][2]string。
+# 第一级的 - 相当于一条小测试点
+# 第二级的 - 第一条对应输入，可能有的第二条对应输出。
+# (即第二级的输入是必须的，可以无输出。至少为 1 个二级 - 至多为 2 个二级 - 。)
 ```
 
 ## 4. 如何贡献项目
