@@ -8,11 +8,14 @@ import (
 	"patpat/initialize"
 	"patpat/judge"
 	"patpat/run"
+	"runtime"
 	"strconv"
 	"strings"
 )
 
 func main() {
+	goos := runtime.GOOS
+
 	initialize.InitMySQL()
 
 	stuCmd := flag.NewFlagSet("stu", flag.ExitOnError)
@@ -47,8 +50,13 @@ func main() {
 		fmt.Println("Lab:", num, "SID:", sid, "Name:", name)
 		tests := initialize.FetchJudgeConfig("test/judge.yaml")
 		fmt.Println("Test cases:", tests)
-
-		exitCode := run.CompileJava("javac", "-encoding", "UTF-8", folderName+"/src/*.java")
+		var exitCode int
+		switch goos {
+		case "windows":
+			exitCode = run.CompileJava("javac", "-encoding", "UTF-8", folderName+"/src/*.java")
+		case "darwin", "linux":
+			exitCode = run.CompileJava("/bin/sh", "-c", "javac -encoding UTF-8 "+folderName+"/src/*.java")
+		}
 		if exitCode != 0 {
 			fmt.Println("Compile Error!")
 			judge.GradeUpload(num, sid, name, "testcase", -3)
@@ -80,7 +88,13 @@ func main() {
 		fmt.Println("Lab:", num, "SID:", sid, "Name:", name)
 		tests := initialize.FetchJudgeConfig("test/judge.yaml")
 		fmt.Println("Test cases:", tests)
-		exitCode := run.CompileJava("javac", "-encoding", "UTF-8", strconv.Itoa(num)+"/"+folderName+"/src/*.java")
+		var exitCode int
+		switch goos {
+		case "windows":
+			exitCode = run.CompileJava("javac", "-encoding", "UTF-8", strconv.Itoa(num)+folderName+"/src/*.java")
+		case "darwin", "linux":
+			exitCode = run.CompileJava("/bin/sh", "-c", "javac -encoding UTF-8 "+strconv.Itoa(num)+folderName+"/src/*.java")
+		}
 		if exitCode != 0 {
 			fmt.Println("Compile Error!")
 			judge.GradeUploadFormal(num, sid, name, "testcase", -3, *tagPtr)
