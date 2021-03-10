@@ -16,10 +16,9 @@ import (
 func main() {
 	goos := runtime.GOOS
 
-	initialize.InitMySQL()
-
 	stuCmd := flag.NewFlagSet("stu", flag.ExitOnError)
 	judgePtr := stuCmd.String("judge", "0-12345-hanhan", "Please specify the name of the folder containing Java files to judge.")
+	onlineModePtr := stuCmd.Bool("online", true, "Online or offline mode")
 
 	taCmd := flag.NewFlagSet("ta", flag.ExitOnError)
 	taJudgePtr := taCmd.String("judge", "0-12345-hanhan", "Please specify the name of the folder containing Java files to judge.")
@@ -36,6 +35,9 @@ func main() {
 	switch os.Args[1] {
 	case "stu":
 		stuCmd.Parse(os.Args[2:])
+		if *onlineModePtr == true {
+			initialize.InitMySQL()
+		}
 		folderName := *judgePtr
 		paramList := strings.Split(folderName, "-")
 		num, err := strconv.Atoi(paramList[0])
@@ -59,20 +61,27 @@ func main() {
 		}
 		if exitCode != 0 {
 			fmt.Println("Compile Error!")
-			judge.GradeUpload(num, sid, name, "testcase", -3)
+			if *onlineModePtr == true {
+				judge.GradeUpload(num, sid, name, "testcase", -3)
+			}
 		} else {
+			fmt.Println("您本次自测的评测情况如下:")
 			for _, t := range tests {
 				testName, testData := initialize.FetchTestCase("test/" + t)
 				fmt.Println(testName)
 				testInputList, testInput, testOutputLines, testOutput, mapTable := initialize.ParseTestData(testData)
-
 				runStatus, actualOutput, actualOutputLines := run.RunJava(2, testInput, "java", "-classpath", folderName+"/src", "Test")
 				compareResult, smallerLen, wrongOutputPos := judge.Compare(testOutputLines, actualOutputLines, mapTable)
+				resultMessage := "Num = " + strconv.Itoa(num) + ", 评测点 = " + t[0:len(tests[0])-5] + ", Grade = " + strconv.Itoa(judge.CalcGrade(runStatus, compareResult))
+				fmt.Println(resultMessage)
 				judge.ReportGen(t[0:len(tests[0])-5], runStatus, compareResult, smallerLen, wrongOutputPos, testInputList, testOutputLines, actualOutputLines, testOutput, actualOutput)
-				judge.GradeUpload(num, sid, name, t, judge.CalcGrade(runStatus, compareResult))
+				if *onlineModePtr == true {
+					judge.GradeUpload(num, sid, name, t[0:len(tests[0])-5], judge.CalcGrade(runStatus, compareResult))
+				}
 			}
 		}
 	case "ta":
+		initialize.InitMySQL()
 		taCmd.Parse(os.Args[2:])
 		folderName := *taJudgePtr
 		paramList := strings.Split(folderName, "-")
@@ -99,22 +108,27 @@ func main() {
 			fmt.Println("Compile Error!")
 			judge.GradeUploadFormal(num, sid, name, "testcase", -3, *tagPtr)
 		} else {
+			fmt.Println("您本次自测的评测情况如下:")
 			for _, t := range tests {
 				testName, testData := initialize.FetchTestCase("test/" + t)
 				fmt.Println(testName)
 				_, testInput, testOutputLines, _, mapTable := initialize.ParseTestData(testData)
 				runStatus, _, actualOutputLines := run.RunJava(2, testInput, "java", "-classpath", strconv.Itoa(num)+"/"+folderName+"/src", "Test")
 				compareResult, _, _ := judge.Compare(testOutputLines, actualOutputLines, mapTable)
-				judge.GradeUploadFormal(num, sid, name, t, judge.CalcGrade(runStatus, compareResult), *tagPtr)
+				resultMessage := "Num = " + strconv.Itoa(num) + ", 评测点 = " + t[0:len(tests[0])-5] + ", Grade = " + strconv.Itoa(judge.CalcGrade(runStatus, compareResult))
+				fmt.Println(resultMessage)
+				judge.GradeUploadFormal(num, sid, name, t[0:len(tests[0])-5], judge.CalcGrade(runStatus, compareResult), *tagPtr)
 			}
 		}
 	case "reg":
+		initialize.InitMySQL()
 		regCmd.Parse(os.Args[2:])
 		sid := *regSidPtr
 		pwd := *regPwdPtr
 		result := v1.Register(sid, pwd)
 		fmt.Println(result)
 	case "query":
+		initialize.InitMySQL()
 		queCmd.Parse(os.Args[2:])
 		sid := *queSidPtr
 		pwd := *quePwdPtr
