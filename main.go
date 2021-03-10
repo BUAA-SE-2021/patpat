@@ -72,11 +72,11 @@ func main() {
 				testInputList, testInput, testOutputLines, testOutput, mapTable := initialize.ParseTestData(testData)
 				runStatus, actualOutput, actualOutputLines := run.RunJava(2, testInput, "java", "-classpath", folderName+"/src", "Test")
 				compareResult, smallerLen, wrongOutputPos := judge.Compare(testOutputLines, actualOutputLines, mapTable)
-				resultMessage := "Num = " + strconv.Itoa(num) + ", 评测点 = " + t[0:len(tests[0])-5] + ", Grade = " + strconv.Itoa(judge.CalcGrade(runStatus, compareResult))
+				resultMessage := "Num = " + strconv.Itoa(num) + ", 评测点 = " + t[0:len(t)-5] + ", Grade = " + strconv.Itoa(judge.CalcGrade(runStatus, compareResult))
 				fmt.Println(resultMessage)
-				judge.ReportGen(t[0:len(tests[0])-5], runStatus, compareResult, smallerLen, wrongOutputPos, testInputList, testOutputLines, actualOutputLines, testOutput, actualOutput)
+				judge.ReportGen(t[0:len(t)-5], runStatus, compareResult, smallerLen, wrongOutputPos, testInputList, testOutputLines, actualOutputLines, testOutput, actualOutput)
 				if *onlineModePtr == true {
-					judge.GradeUpload(num, sid, name, t[0:len(tests[0])-5], judge.CalcGrade(runStatus, compareResult))
+					judge.GradeUpload(num, sid, name, t[0:len(t)-5], judge.CalcGrade(runStatus, compareResult))
 				}
 			}
 		}
@@ -115,9 +115,9 @@ func main() {
 				_, testInput, testOutputLines, _, mapTable := initialize.ParseTestData(testData)
 				runStatus, _, actualOutputLines := run.RunJava(2, testInput, "java", "-classpath", strconv.Itoa(num)+"/"+folderName+"/src", "Test")
 				compareResult, _, _ := judge.Compare(testOutputLines, actualOutputLines, mapTable)
-				resultMessage := "Num = " + strconv.Itoa(num) + ", 评测点 = " + t[0:len(tests[0])-5] + ", Grade = " + strconv.Itoa(judge.CalcGrade(runStatus, compareResult))
+				resultMessage := "Num = " + strconv.Itoa(num) + ", 评测点 = " + t[0:len(t)-5] + ", Grade = " + strconv.Itoa(judge.CalcGrade(runStatus, compareResult))
 				fmt.Println(resultMessage)
-				judge.GradeUploadFormal(num, sid, name, t[0:len(tests[0])-5], judge.CalcGrade(runStatus, compareResult), *tagPtr)
+				judge.GradeUploadFormal(num, sid, name, t[0:len(t)-5], judge.CalcGrade(runStatus, compareResult), *tagPtr)
 			}
 		}
 	case "reg":
