@@ -59,7 +59,7 @@ func QueryResult(sid int) (result string) {
 	global.DB.Where("sid = ?", sid).Find(&q)
 	result = "您每一次实验的评测情况如下: (AC: 1, TLE: -1, WA: -2, CE: -3)\n"
 	for _, v := range q {
-		result += "Num = " + strconv.Itoa(v.Num) + ", 评测点 = " + v.Test[0:len(v.Test)-5] + ", Grade = " + strconv.Itoa(v.Result) + " (" + v.Tag + ")\n"
+		result += "Num = " + strconv.Itoa(v.Num) + ", 评测点 = " + v.Test + ", Grade = " + strconv.Itoa(v.Result) + " (" + v.Tag + ")\n"
 	}
 	return result
 }
