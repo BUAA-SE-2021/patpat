@@ -135,6 +135,9 @@ func main() {
 		if v1.Login(sid, pwd) {
 			result := v1.QueryResult(sid)
 			fmt.Print(result)
+			if err := os.WriteFile("ta_judge_result.txt", []byte(result), 0644); err != nil {
+				panic(err)
+			}
 		}
 	default:
 		fmt.Println("Expected 'stu' or 'reg' or 'query' subcommands!")
