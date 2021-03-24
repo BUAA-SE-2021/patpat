@@ -55,7 +55,9 @@ func RunJava(timeout int, testInput string, command string, args ...string) (int
 	case err := <-done:
 		if err != nil {
 			close(done)
-			panic("process done, with error: " + err.Error())
+			// panic("process done, with error: " + err.Error())
+			fmt.Println("process done, with error: " + err.Error())
+			runStatus = 2 // error when running
 		}
 		fmt.Println("END RUN JAVA")
 	}

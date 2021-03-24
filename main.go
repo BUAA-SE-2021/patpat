@@ -65,7 +65,7 @@ func main() {
 				judge.GradeUpload(num, sid, name, "testcase", -3)
 			}
 		} else {
-			fmt.Println("您本次自测的评测情况如下:")
+			fmt.Println("您本次自测的评测情况如下: (AC: 1, TLE: -1, WA: -2, CE: -3, RE: -4)")
 			for _, t := range tests {
 				testName, testData := initialize.FetchTestCase("test/" + t)
 				fmt.Println(testName)
@@ -108,7 +108,7 @@ func main() {
 			fmt.Println("Compile Error!")
 			judge.GradeUploadFormal(num, sid, name, "testcase", -3, *tagPtr)
 		} else {
-			fmt.Println("您本次自测的评测情况如下:")
+			fmt.Println("您本次自测的评测情况如下: (AC: 1, TLE: -1, WA: -2, CE: -3, RE: -4)")
 			for _, t := range tests {
 				testName, testData := initialize.FetchTestCase("test/" + t)
 				fmt.Println(testName)
