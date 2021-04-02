@@ -3,6 +3,7 @@ package initialize
 import (
 	"io"
 	"os"
+	"patpat/global"
 	"strings"
 
 	"gopkg.in/yaml.v3"
@@ -18,6 +19,12 @@ type JudgeConfig struct {
 type TestCase struct {
 	Name string     `yaml:"name"`
 	Data [][]string `yaml:"data"`
+}
+
+type FormalTestCase struct {
+	Num      int    `gorm:"num"`
+	FileName string `gorm:"file_name"`
+	Yaml     string `gorm:"yaml"`
 }
 
 type MySQLConfig struct {
@@ -46,6 +53,24 @@ func FetchJudgeConfig(configAddr string) (tests []string) {
 
 	tests = t.Tests
 	return tests
+}
+
+func FetchFormalTestCase(num int) (formalTestCases []FormalTestCase) {
+	global.DB.Where("num = ?", num).Find(&formalTestCases)
+	return formalTestCases
+}
+
+func ParseFormalTestCase(formalTestCase FormalTestCase) (num int, fileName string, name string, testData *[][]string) {
+	t := TestCase{}
+	err := yaml.Unmarshal([]byte(formalTestCase.Yaml), &t)
+	if err != nil {
+		panic(err)
+	}
+	num = formalTestCase.Num
+	fileName = formalTestCase.FileName
+	name = t.Name
+	testData = &t.Data
+	return num, fileName, name, testData
 }
 
 func FetchTestCase(addr string) (name string, testData *[][]string) {

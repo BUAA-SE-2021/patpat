@@ -22,6 +22,7 @@ func main() {
 
 	taCmd := flag.NewFlagSet("ta", flag.ExitOnError)
 	taJudgePtr := taCmd.String("judge", "0-12345-hanhan", "Please specify the name of the folder containing Java files to judge.")
+	taPwdPtr := taCmd.String("pwd", "888888", "Please enter your password.")
 	tagPtr := taCmd.String("tag", "test", "Tag for this judge.")
 
 	regCmd := flag.NewFlagSet("reg", flag.ExitOnError)
@@ -35,7 +36,7 @@ func main() {
 	switch os.Args[1] {
 	case "stu":
 		stuCmd.Parse(os.Args[2:])
-		if *onlineModePtr == true {
+		if *onlineModePtr {
 			initialize.InitMySQL()
 		}
 		folderName := *judgePtr
@@ -61,7 +62,7 @@ func main() {
 		}
 		if exitCode != 0 {
 			fmt.Println("Compile Error!")
-			if *onlineModePtr == true {
+			if *onlineModePtr {
 				judge.GradeUpload(num, sid, name, "testcase", -3)
 			}
 		} else {
@@ -75,7 +76,7 @@ func main() {
 				resultMessage := "Num = " + strconv.Itoa(num) + ", 评测点 = " + t[0:len(t)-5] + ", Grade = " + strconv.Itoa(judge.CalcGrade(runStatus, compareResult))
 				fmt.Println(resultMessage)
 				judge.ReportGen(t[0:len(t)-5], runStatus, compareResult, smallerLen, wrongOutputPos, testInputList, testOutputLines, actualOutputLines, testOutput, actualOutput)
-				if *onlineModePtr == true {
+				if *onlineModePtr {
 					judge.GradeUpload(num, sid, name, t[0:len(t)-5], judge.CalcGrade(runStatus, compareResult))
 				}
 			}
@@ -84,6 +85,7 @@ func main() {
 		initialize.InitMySQL()
 		taCmd.Parse(os.Args[2:])
 		folderName := *taJudgePtr
+		pwd := *taPwdPtr
 		paramList := strings.Split(folderName, "-")
 		num, err := strconv.Atoi(paramList[0])
 		if err != nil {
@@ -95,29 +97,38 @@ func main() {
 		}
 		name := paramList[2]
 		fmt.Println("Lab:", num, "SID:", sid, "Name:", name)
-		tests := initialize.FetchJudgeConfig("test/judge.yaml")
-		fmt.Println("Test cases:", tests)
-		var exitCode int
-		switch goos {
-		case "windows":
-			exitCode = run.CompileJava("javac", "-encoding", "UTF-8", strconv.Itoa(num)+"/"+folderName+"/src/*.java")
-		case "darwin", "linux":
-			exitCode = run.CompileJava("/bin/sh", "-c", "javac -encoding UTF-8 "+strconv.Itoa(num)+"/"+folderName+"/src/*.java")
-		}
-		if exitCode != 0 {
-			fmt.Println("Compile Error!")
-			judge.GradeUploadFormal(num, sid, name, "testcase", -3, *tagPtr)
-		} else {
-			fmt.Println("您本次自测的评测情况如下: (AC: 1, TLE: -1, WA: -2, CE: -3, RE: -4)")
-			for _, t := range tests {
-				testName, testData := initialize.FetchTestCase("test/" + t)
-				fmt.Println(testName)
-				_, testInput, testOutputLines, _, mapTable := initialize.ParseTestData(testData)
-				runStatus, _, actualOutputLines := run.RunJava(2, testInput, "java", "-classpath", strconv.Itoa(num)+"/"+folderName+"/src", "Test")
-				compareResult, _, _ := judge.Compare(testOutputLines, actualOutputLines, mapTable)
-				resultMessage := "Num = " + strconv.Itoa(num) + ", 评测点 = " + t[0:len(t)-5] + ", Grade = " + strconv.Itoa(judge.CalcGrade(runStatus, compareResult))
-				fmt.Println(resultMessage)
-				judge.GradeUploadFormal(num, sid, name, t[0:len(t)-5], judge.CalcGrade(runStatus, compareResult), *tagPtr)
+		if v1.Login(sid, pwd) {
+			formalTestCases := initialize.FetchFormalTestCase(num)
+			fmt.Print("Test cases: ")
+			for _, formalTestCase := range formalTestCases {
+				fmt.Print(formalTestCase.FileName)
+			}
+			fmt.Println()
+			var exitCode int
+			switch goos {
+			case "windows":
+				exitCode = run.CompileJava("javac", "-encoding", "UTF-8", strconv.Itoa(num)+"/"+folderName+"/src/*.java")
+			case "darwin", "linux":
+				exitCode = run.CompileJava("/bin/sh", "-c", "javac -encoding UTF-8 "+strconv.Itoa(num)+"/"+folderName+"/src/*.java")
+			}
+			if exitCode != 0 {
+				fmt.Println("Compile Error!")
+				judge.GradeUploadFormal(num, sid, name, "testcase", -3, *tagPtr)
+			} else {
+				fmt.Println("您本次黑盒测试的评测情况如下: (AC: 1, TLE: -1, WA: -2, CE: -3, RE: -4)")
+				for _, t := range formalTestCases {
+					_, _, testName, testData := initialize.ParseFormalTestCase(t)
+					// testName, testData := initialize.FetchTestCase("test/" + t)
+					fmt.Println(testName)
+					_, testInput, testOutputLines, _, mapTable := initialize.ParseTestData(testData)
+
+					runStatus, _, actualOutputLines := run.RunJava(2, testInput, "java", "-classpath", folderName+"/src", "Test")
+
+					compareResult, _, _ := judge.Compare(testOutputLines, actualOutputLines, mapTable)
+					resultMessage := "Num = " + strconv.Itoa(num) + ", 评测点 = " + t.FileName + ", Grade = " + strconv.Itoa(judge.CalcGrade(runStatus, compareResult))
+					fmt.Println(resultMessage)
+					judge.GradeUploadFormal(num, sid, name, t.FileName, judge.CalcGrade(runStatus, compareResult), *tagPtr)
+				}
 			}
 		}
 	case "reg":
