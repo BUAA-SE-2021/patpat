@@ -107,9 +107,9 @@ func main() {
 			var exitCode int
 			switch goos {
 			case "windows":
-				exitCode = run.CompileJava("javac", "-encoding", "UTF-8", strconv.Itoa(num)+"/"+folderName+"/src/*.java")
+				exitCode = run.CompileJava("javac", "-encoding", "UTF-8", folderName+"/src/*.java")
 			case "darwin", "linux":
-				exitCode = run.CompileJava("/bin/sh", "-c", "javac -encoding UTF-8 "+strconv.Itoa(num)+"/"+folderName+"/src/*.java")
+				exitCode = run.CompileJava("/bin/sh", "-c", "javac -encoding UTF-8 "+folderName+"/src/*.java")
 			}
 			if exitCode != 0 {
 				fmt.Println("Compile Error!")
