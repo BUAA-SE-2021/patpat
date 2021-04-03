@@ -1,6 +1,7 @@
 package initialize
 
 import (
+	_ "embed"
 	"io"
 	"os"
 	"patpat/global"
@@ -120,14 +121,18 @@ func ParseTestData(testData *[][]string) (testInputList []string, testInput stri
 	return testInputList, testInput, testOutputLines, testOutput, mapTable
 }
 
+//go:embed mysql.yaml
+var mySQLyaml []byte
+
 func FetchMySQLConfig() (host string, port string, username string, password string, db string) {
 	t := MySQLConfig{}
-	fin, err := os.Open("mysql.yaml")
-	if err != nil {
-		panic(err)
-	}
-	cin, _ := io.ReadAll(fin)
-	err = yaml.Unmarshal([]byte(cin), &t)
+	// fin, err := os.Open("mysql.yaml")
+	// if err != nil {
+	// 	panic(err)
+	// }
+	// cin, _ := io.ReadAll(fin)
+	// err = yaml.Unmarshal([]byte(cin), &t)
+	err := yaml.Unmarshal(mySQLyaml, &t)
 	if err != nil {
 		panic(err)
 	}

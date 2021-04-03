@@ -151,6 +151,6 @@ func main() {
 			}
 		}
 	default:
-		fmt.Println("Expected 'stu' or 'reg' or 'query' subcommands!")
+		fmt.Println("Expected 'stu' or 'ta' or 'reg' or 'query' subcommands!")
 	}
 }

@@ -35,5 +35,6 @@ func InitMySQL() {
 		&model.JudgeResultUsual{},
 		&model.JudgeResultFormal{},
 		&model.User{},
+		&FormalTestCase{},
 	)
 }
