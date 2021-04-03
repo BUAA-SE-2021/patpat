@@ -101,7 +101,7 @@ func main() {
 			formalTestCases := initialize.FetchFormalTestCase(num)
 			fmt.Print("Test cases: ")
 			for _, formalTestCase := range formalTestCases {
-				fmt.Print(formalTestCase.FileName)
+				fmt.Print(formalTestCase.FileName, " ")
 			}
 			fmt.Println()
 			var exitCode int
