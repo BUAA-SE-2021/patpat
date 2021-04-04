@@ -41,6 +41,6 @@ func CompileJava(name string, args ...string) (exitCode int) {
 		ws := cmd.ProcessState.Sys().(syscall.WaitStatus)
 		exitCode = ws.ExitStatus()
 	}
-	fmt.Printf("Compile result: (stdout: %v) (stderr: %v) (exitCode: %v)\n", stdout, strings.TrimRight(stderr, "\r\n"), exitCode)
+	fmt.Printf("Compile result: (stdout: %v) (stderr: %v) (exitCode: %v)\n", stdout, strings.Trim(stderr, "\r\n\t "), exitCode)
 	return exitCode
 }

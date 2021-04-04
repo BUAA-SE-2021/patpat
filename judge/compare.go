@@ -17,10 +17,10 @@ func Compare(testOutputLines []string, actualOutputLines []string, mapTable []in
 
 	i := 0
 	for i < smallerLen {
-		if strings.Compare(strings.TrimRight(testOutputLines[i], "\r\n"), strings.TrimRight(actualOutputLines[i], "\r\n")) != 0 {
-			// fmt.Println(strings.Compare(strings.TrimRight(testOutputLines[i], "\r\n"), strings.TrimRight(actualOutputLines[i], "\r\n")))
+		if strings.Compare(strings.Trim(testOutputLines[i], "\r\n\t "), strings.Trim(actualOutputLines[i], "\r\n\t ")) != 0 {
+
 			compareResult = mapTable[i] // 输出第几个输入时，出现错误
-			// fmt.Println("Error\n", len(strings.TrimRight(testOutputLines[i], "\r\n")), "\n", len(strings.TrimRight(actualOutputLines[i], "\r\n")))
+
 			return compareResult, smallerLen, i
 		}
 		i++

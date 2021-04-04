@@ -120,13 +120,14 @@ func main() {
 					_, _, testName, testData := initialize.ParseFormalTestCase(t)
 					// testName, testData := initialize.FetchTestCase("test/" + t)
 					fmt.Println(testName)
-					_, testInput, testOutputLines, _, mapTable := initialize.ParseTestData(testData)
+					testInputList, testInput, testOutputLines, testOutput, mapTable := initialize.ParseTestData(testData)
 
-					runStatus, _, actualOutputLines := run.RunJava(2, testInput, "java", "-classpath", folderName+"/src", "Test")
+					runStatus, actualOutput, actualOutputLines := run.RunJava(2, testInput, "java", "-classpath", folderName+"/src", "Test")
 
-					compareResult, _, _ := judge.Compare(testOutputLines, actualOutputLines, mapTable)
+					compareResult, smallerLen, wrongOutputPos := judge.Compare(testOutputLines, actualOutputLines, mapTable)
 					resultMessage := "Num = " + strconv.Itoa(num) + ", 评测点 = " + t.FileName + ", Grade = " + strconv.Itoa(judge.CalcGrade(runStatus, compareResult))
 					fmt.Println(resultMessage)
+					judge.TaJudgeReportGen(t.FileName, runStatus, compareResult, smallerLen, wrongOutputPos, testInputList, testOutputLines, actualOutputLines, testOutput, actualOutput)
 					judge.GradeUploadFormal(num, sid, name, t.FileName, judge.CalcGrade(runStatus, compareResult), *tagPtr)
 				}
 			}

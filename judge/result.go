@@ -68,6 +68,37 @@ func ReportGen(reportName string, runStatus int, compareResult int, smallerLen i
 	}
 }
 
+func TaJudgeReportGen(reportName string, runStatus int, compareResult int, smallerLen int, wrongOutputPos int, testInputList []string, testOutputLines []string, actualOutputLines []string, testOutput string, actualOutput string) {
+	content := "# " + reportName + " 评测情况\n\n" + "## 通过情况\n\n"
+	if runStatus == 0 && compareResult == -3 {
+		content += "Congratulations, AC!\n"
+	} else if runStatus == 1 && compareResult == -3 {
+		content += "TLE，输出结果正确\n"
+	} else if runStatus == 2 && compareResult == -3 {
+		content += "RE，输出结果正确\n"
+	} else {
+		if runStatus == 0 {
+			content += "WA，输出结果错误\n\n"
+		} else if runStatus == 1 {
+			content += "TLE，输出结果错误\n\n"
+		} else if runStatus == 2 {
+			content += "RE，输出结果错误\n\n"
+		}
+		content += "## 输出比较\n\n"
+		if compareResult == -1 {
+			content += "实际输出行数 < 期望输出行数。\n\n"
+		} else if compareResult == -2 {
+			content += "实际输出行数 > 期望输出行数。\n\n"
+		} else {
+			content += "### 期望输出行\n\n```java\n" + testOutputLines[wrongOutputPos] + "\n```\n\n"
+			content += "### 实际输出行\n\n```java\n" + actualOutputLines[wrongOutputPos] + "\n```\n"
+		}
+	}
+	if err := os.WriteFile(reportName+"_result"+".md", []byte(content), 0644); err != nil {
+		panic(err)
+	}
+}
+
 func CalcGrade(runStatus int, compareResult int) (result int) {
 	// AC 完全正确 1
 	// TLE 超时 -1

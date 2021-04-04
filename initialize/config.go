@@ -99,12 +99,12 @@ func ParseTestData(testData *[][]string) (testInputList []string, testInput stri
 		if lenSinglePoint == 0 || lenSinglePoint > 2 {
 			panic("Wrong Test Case Format!")
 		}
-		testInputList = append(testInputList, strings.TrimRight(v[0], "\r\n"))
+		testInputList = append(testInputList, strings.Trim(v[0], "\r\n\t "))
 		if lenSinglePoint == 2 {
-			curOutput := strings.TrimRight(v[1], "\r\n")
+			curOutput := strings.Trim(v[1], "\r\n\t ")
 			curOutputLines := strings.Split(curOutput, "\n")
 			for _, s := range curOutputLines {
-				testOutputLines = append(testOutputLines, s)
+				testOutputLines = append(testOutputLines, strings.Trim(s, "\r\n\t "))
 				mapTable = append(mapTable, i)
 				linesInOutput++
 			}

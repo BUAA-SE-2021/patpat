@@ -62,6 +62,6 @@ func RunJava(timeout int, testInput string, command string, args ...string) (int
 		fmt.Println("END RUN JAVA")
 	}
 	actualOutput := buf.String()
-	actualOutputLines := strings.Split(strings.TrimRight(actualOutput, "\r\n"), "\n")
+	actualOutputLines := strings.Split(strings.Trim(actualOutput, "\r\n\t "), "\n")
 	return runStatus, actualOutput, actualOutputLines
 }
