@@ -1,3 +1,5 @@
 # 请将本judge.yaml置于test目录下，注意tests:后有一个空格
-tests: [testcase.yaml, testcase.yaml] # 这是个列表，可有更多的测试样例点，写法如下
-# tests: [testcase1.yaml, testcase2.yaml]
+tests:
+- testcase1.yaml
+- testcase2.yaml
+# 如有更多的测试样例，则另起一行 - 即可
