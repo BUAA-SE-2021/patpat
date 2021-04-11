@@ -32,7 +32,7 @@ java -classpath folderName/src Test # 执行
 
 注：评测机环境使用 Windows 下的 Oracle JDK 15。
 
-### 1.2. 自评
+### 1.2. 自评自测
 
 请**严格按照**如下的目录层级与命名准备好待测文件：
 
@@ -54,6 +54,7 @@ java -classpath folderName/src Test # 执行
 
 ```bash
 ./patpat stu -judge 1-18373722-朱英豪 # 请修改为自己的相关信息
+./patpat ta -judge 1-18373722-朱英豪 -pwd your_pwd -tag 随意打一些文字，可以用来标注第几次尝试 # 无限重测命令
 ```
 
 **评测结果:** 见生成的`$testcase$_result.md`。(其与该`patpat`程序在同级目录)
