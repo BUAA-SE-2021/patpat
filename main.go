@@ -8,24 +8,23 @@ import (
 	"patpat/initialize"
 	"patpat/judge"
 	"patpat/run"
-	"runtime"
 	"strconv"
 	"strings"
 )
 
 func main() {
-	goos := runtime.GOOS
+	// goos := runtime.GOOS
 
 	stuCmd := flag.NewFlagSet("stu", flag.ExitOnError)
 	judgePtr := stuCmd.String("judge", "0-12345-hanhan", "Please specify the name of the folder containing Java files to judge.")
 	onlineModePtr := stuCmd.Bool("online", true, "Online or offline mode")
-	stuPkgPtr := stuCmd.Bool("pkg", false, "Use package or not.")
+	// stuPkgPtr := stuCmd.Bool("pkg", false, "Use package or not.")
 
 	taCmd := flag.NewFlagSet("ta", flag.ExitOnError)
 	taJudgePtr := taCmd.String("judge", "0-12345-hanhan", "Please specify the name of the folder containing Java files to judge.")
 	taPwdPtr := taCmd.String("pwd", "888888", "Please enter your password.")
 	tagPtr := taCmd.String("tag", "test", "Tag for this judge.")
-	taPkgPtr := taCmd.Bool("pkg", false, "Use package or not.")
+	// taPkgPtr := taCmd.Bool("pkg", false, "Use package or not.")
 
 	regCmd := flag.NewFlagSet("reg", flag.ExitOnError)
 	regSidPtr := regCmd.Int("sid", 123456, "Please specify your SID.")
@@ -55,21 +54,22 @@ func main() {
 		fmt.Println("Lab:", num, "SID:", sid, "Name:", name)
 		tests := initialize.FetchJudgeConfig("test/judge.yaml")
 		fmt.Println("Test cases:", tests)
-		var exitCode int
-		switch goos {
-		case "windows":
-			if *stuPkgPtr {
-				exitCode = run.CompileJava("javac", "-encoding", "UTF-8", "-cp", "./"+folderName+"/src", "-d", "./"+folderName+"/out", "./"+folderName+"/src"+"/Test.java")
-			} else {
-				exitCode = run.CompileJava("javac", "-encoding", "UTF-8", folderName+"/src/*.java")
-			}
-		case "darwin", "linux":
-			if *stuPkgPtr {
-				exitCode = run.CompileJava("javac", "-encoding", "UTF-8", "-cp", "./"+folderName+"/src", "-d", "./"+folderName+"/out", "./"+folderName+"/src"+"/Test.java")
-			} else {
-				exitCode = run.CompileJava("/bin/sh", "-c", "javac -encoding UTF-8 "+folderName+"/src/*.java")
-			}
-		}
+		// var exitCode int
+		// switch goos {
+		// case "windows":
+		// 	if *stuPkgPtr {
+		// 		exitCode = run.CompileJava("javac", "-encoding", "UTF-8", "-cp", "./"+folderName+"/src", "-d", "./"+folderName+"/out", "./"+folderName+"/src"+"/Test.java")
+		// 	} else {
+		// 		exitCode = run.CompileJava("javac", "-encoding", "UTF-8", folderName+"/src/*.java")
+		// 	}
+		// case "darwin", "linux":
+		// 	if *stuPkgPtr {
+		// 		exitCode = run.CompileJava("javac", "-encoding", "UTF-8", "-cp", "./"+folderName+"/src", "-d", "./"+folderName+"/out", "./"+folderName+"/src"+"/Test.java")
+		// 	} else {
+		// 		exitCode = run.CompileJava("/bin/sh", "-c", "javac -encoding UTF-8 "+folderName+"/src/*.java")
+		// 	}
+		// }
+		exitCode := run.CompileJava("javac", "-encoding", "UTF-8", "-cp", "./"+folderName+"/src", "-d", "./"+folderName+"/out", "./"+folderName+"/src"+"/Test.java")
 		if exitCode != 0 {
 			fmt.Println("Compile Error!")
 			if *onlineModePtr {
@@ -81,14 +81,15 @@ func main() {
 				testName, testData := initialize.FetchTestCase("test/" + t)
 				fmt.Println(testName)
 				testInputList, testInput, testOutputLines, testOutput, mapTable := initialize.ParseTestData(testData)
-				var runStatus int
-				var actualOutput string
-				var actualOutputLines []string
-				if *stuPkgPtr {
-					runStatus, actualOutput, actualOutputLines = run.RunJava(2, testInput, "java", "-classpath", "./"+folderName+"/out", "Test")
-				} else {
-					runStatus, actualOutput, actualOutputLines = run.RunJava(2, testInput, "java", "-classpath", folderName+"/src", "Test")
-				}
+				// var runStatus int
+				// var actualOutput string
+				// var actualOutputLines []string
+				// if *stuPkgPtr {
+				// 	runStatus, actualOutput, actualOutputLines = run.RunJava(2, testInput, "java", "-classpath", "./"+folderName+"/out", "Test")
+				// } else {
+				// 	runStatus, actualOutput, actualOutputLines = run.RunJava(2, testInput, "java", "-classpath", folderName+"/src", "Test")
+				// }
+				runStatus, actualOutput, actualOutputLines := run.RunJava(2, testInput, "java", "-classpath", "./"+folderName+"/out", "Test")
 				compareResult, smallerLen, wrongOutputPos := judge.Compare(testOutputLines, actualOutputLines, mapTable)
 				resultMessage := "Num = " + strconv.Itoa(num) + ", 评测点 = " + t[0:len(t)-5] + ", Grade = " + strconv.Itoa(judge.CalcGrade(runStatus, compareResult))
 				fmt.Println(resultMessage)
@@ -121,21 +122,22 @@ func main() {
 				fmt.Print(formalTestCase.FileName, " ")
 			}
 			fmt.Println()
-			var exitCode int
-			switch goos {
-			case "windows":
-				if *taPkgPtr {
-					exitCode = run.CompileJava("javac", "-encoding", "UTF-8", "-cp", "./"+folderName+"/src", "-d", "./"+folderName+"/out", "./"+folderName+"/src"+"/Test.java")
-				} else {
-					exitCode = run.CompileJava("javac", "-encoding", "UTF-8", folderName+"/src/*.java")
-				}
-			case "darwin", "linux":
-				if *taPkgPtr {
-					exitCode = run.CompileJava("javac", "-encoding", "UTF-8", "-cp", "./"+folderName+"/src", "-d", "./"+folderName+"/out", "./"+folderName+"/src"+"/Test.java")
-				} else {
-					exitCode = run.CompileJava("/bin/sh", "-c", "javac -encoding UTF-8 "+folderName+"/src/*.java")
-				}
-			}
+			// var exitCode int
+			// switch goos {
+			// case "windows":
+			// 	if *taPkgPtr {
+			// 		exitCode = run.CompileJava("javac", "-encoding", "UTF-8", "-cp", "./"+folderName+"/src", "-d", "./"+folderName+"/out", "./"+folderName+"/src"+"/Test.java")
+			// 	} else {
+			// 		exitCode = run.CompileJava("javac", "-encoding", "UTF-8", folderName+"/src/*.java")
+			// 	}
+			// case "darwin", "linux":
+			// 	if *taPkgPtr {
+			// 		exitCode = run.CompileJava("javac", "-encoding", "UTF-8", "-cp", "./"+folderName+"/src", "-d", "./"+folderName+"/out", "./"+folderName+"/src"+"/Test.java")
+			// 	} else {
+			// 		exitCode = run.CompileJava("/bin/sh", "-c", "javac -encoding UTF-8 "+folderName+"/src/*.java")
+			// 	}
+			// }
+			exitCode := run.CompileJava("javac", "-encoding", "UTF-8", "-cp", "./"+folderName+"/src", "-d", "./"+folderName+"/out", "./"+folderName+"/src"+"/Test.java")
 			if exitCode != 0 {
 				fmt.Println("Compile Error!")
 				judge.GradeUploadFormal(num, sid, name, "testcase", -3, *tagPtr)
@@ -146,14 +148,15 @@ func main() {
 					// testName, testData := initialize.FetchTestCase("test/" + t)
 					fmt.Println(testName)
 					testInputList, testInput, testOutputLines, testOutput, mapTable := initialize.ParseTestData(testData)
-					var runStatus int
-					var actualOutput string
-					var actualOutputLines []string
-					if *taPkgPtr {
-						runStatus, actualOutput, actualOutputLines = run.RunJava(2, testInput, "java", "-classpath", "./"+folderName+"/out", "Test")
-					} else {
-						runStatus, actualOutput, actualOutputLines = run.RunJava(2, testInput, "java", "-classpath", folderName+"/src", "Test")
-					}
+					// var runStatus int
+					// var actualOutput string
+					// var actualOutputLines []string
+					// if *taPkgPtr {
+					// 	runStatus, actualOutput, actualOutputLines = run.RunJava(2, testInput, "java", "-classpath", "./"+folderName+"/out", "Test")
+					// } else {
+					// 	runStatus, actualOutput, actualOutputLines = run.RunJava(2, testInput, "java", "-classpath", folderName+"/src", "Test")
+					// }
+					runStatus, actualOutput, actualOutputLines := run.RunJava(2, testInput, "java", "-classpath", "./"+folderName+"/out", "Test")
 					compareResult, smallerLen, wrongOutputPos := judge.Compare(testOutputLines, actualOutputLines, mapTable)
 					resultMessage := "Num = " + strconv.Itoa(num) + ", 评测点 = " + t.FileName + ", Grade = " + strconv.Itoa(judge.CalcGrade(runStatus, compareResult))
 					fmt.Println(resultMessage)

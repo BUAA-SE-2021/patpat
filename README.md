@@ -24,16 +24,6 @@ javac -encoding UTF-8 1-18373722-朱英豪/src/*.java # 请修改为自己的相
 
 评测机使用的编译命令与执行命令：
 
-- 不含 package
-
-```bash
-javac -encoding UTF-8 folderName/src/*.java # 编译
-java -classpath folderName/src Test # 执行
-# folderName为1-123456-hanhan含有学号姓名等信息的文件夹名，在后续会具体说明各字段含义。
-```
-
-- 含 package
-
 ```bash
 javac -encoding UTF-8 -cp folderName/src -d folderName/out folderName/src/Test.java # 编译
 java -classpath folderName/out Test # 执行
@@ -69,8 +59,6 @@ java -classpath folderName/out Test # 执行
 **评测结果:** 见生成的`$testcase$_result.md`。(其与该`patpat`程序在同级目录)
 
 **离线模式:** 仅在 stu 模式下有效，添加参数 `-online=0`
-
-**带 package 编译:** 添加参数 `-pkg=1` (默认不带)
 
 ### 1.3. 查询助教评测结果
 
