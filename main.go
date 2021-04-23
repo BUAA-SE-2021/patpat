@@ -8,12 +8,13 @@ import (
 	"patpat/initialize"
 	"patpat/judge"
 	"patpat/run"
+	"runtime"
 	"strconv"
 	"strings"
 )
 
 func main() {
-	// goos := runtime.GOOS
+	goos := runtime.GOOS
 
 	stuCmd := flag.NewFlagSet("stu", flag.ExitOnError)
 	judgePtr := stuCmd.String("judge", "0-12345-hanhan", "Please specify the name of the folder containing Java files to judge.")
@@ -54,22 +55,23 @@ func main() {
 		fmt.Println("Lab:", num, "SID:", sid, "Name:", name)
 		tests := initialize.FetchJudgeConfig("test/judge.yaml")
 		fmt.Println("Test cases:", tests)
-		// var exitCode int
-		// switch goos {
-		// case "windows":
-		// 	if *stuPkgPtr {
-		// 		exitCode = run.CompileJava("javac", "-encoding", "UTF-8", "-cp", "./"+folderName+"/src", "-d", "./"+folderName+"/out", "./"+folderName+"/src"+"/Test.java")
-		// 	} else {
-		// 		exitCode = run.CompileJava("javac", "-encoding", "UTF-8", folderName+"/src/*.java")
-		// 	}
-		// case "darwin", "linux":
-		// 	if *stuPkgPtr {
-		// 		exitCode = run.CompileJava("javac", "-encoding", "UTF-8", "-cp", "./"+folderName+"/src", "-d", "./"+folderName+"/out", "./"+folderName+"/src"+"/Test.java")
-		// 	} else {
-		// 		exitCode = run.CompileJava("/bin/sh", "-c", "javac -encoding UTF-8 "+folderName+"/src/*.java")
-		// 	}
-		// }
-		exitCode := run.CompileJava("javac", "-encoding", "UTF-8", "-cp", "./"+folderName+"/src", "-d", "./"+folderName+"/out", "./"+folderName+"/src"+"/Test.java")
+		var exitCode int
+		switch goos {
+		case "windows":
+			// if *stuPkgPtr {
+			// 	exitCode = run.CompileJava("javac", "-encoding", "UTF-8", "-cp", "./"+folderName+"/src", "-d", "./"+folderName+"/out", "./"+folderName+"/src"+"/Test.java")
+			// } else {
+			// 	exitCode = run.CompileJava("javac", "-encoding", "UTF-8", folderName+"/src/*.java")
+			// }
+			exitCode = run.CompileJava("javac", "-encoding", "UTF-8", "-cp", "./"+folderName+"/src", "-d", "./"+folderName+"/out", "./"+folderName+"/src"+"/*.java")
+		case "darwin", "linux":
+			// if *stuPkgPtr {
+			// 	exitCode = run.CompileJava("javac", "-encoding", "UTF-8", "-cp", "./"+folderName+"/src", "-d", "./"+folderName+"/out", "./"+folderName+"/src"+"/Test.java")
+			// } else {
+			// 	exitCode = run.CompileJava("/bin/sh", "-c", "javac -encoding UTF-8 "+folderName+"/src/*.java")
+			// }
+			exitCode = run.CompileJava("/bin/sh", "-c", "javac -encoding UTF-8 -cp ./"+folderName+"/src -d ./"+folderName+"/out ./"+folderName+"/src/*.java")
+		}
 		if exitCode != 0 {
 			fmt.Println("Compile Error!")
 			if *onlineModePtr {
@@ -122,22 +124,24 @@ func main() {
 				fmt.Print(formalTestCase.FileName, " ")
 			}
 			fmt.Println()
-			// var exitCode int
-			// switch goos {
-			// case "windows":
-			// 	if *taPkgPtr {
-			// 		exitCode = run.CompileJava("javac", "-encoding", "UTF-8", "-cp", "./"+folderName+"/src", "-d", "./"+folderName+"/out", "./"+folderName+"/src"+"/Test.java")
-			// 	} else {
-			// 		exitCode = run.CompileJava("javac", "-encoding", "UTF-8", folderName+"/src/*.java")
-			// 	}
-			// case "darwin", "linux":
-			// 	if *taPkgPtr {
-			// 		exitCode = run.CompileJava("javac", "-encoding", "UTF-8", "-cp", "./"+folderName+"/src", "-d", "./"+folderName+"/out", "./"+folderName+"/src"+"/Test.java")
-			// 	} else {
-			// 		exitCode = run.CompileJava("/bin/sh", "-c", "javac -encoding UTF-8 "+folderName+"/src/*.java")
-			// 	}
-			// }
-			exitCode := run.CompileJava("javac", "-encoding", "UTF-8", "-cp", "./"+folderName+"/src", "-d", "./"+folderName+"/out", "./"+folderName+"/src"+"/Test.java")
+			var exitCode int
+			switch goos {
+			case "windows":
+				// if *taPkgPtr {
+				// 	exitCode = run.CompileJava("javac", "-encoding", "UTF-8", "-cp", "./"+folderName+"/src", "-d", "./"+folderName+"/out", "./"+folderName+"/src"+"/Test.java")
+				// } else {
+				// 	exitCode = run.CompileJava("javac", "-encoding", "UTF-8", folderName+"/src/*.java")
+				// }
+				exitCode = run.CompileJava("javac", "-encoding", "UTF-8", "-cp", "./"+folderName+"/src", "-d", "./"+folderName+"/out", "./"+folderName+"/src"+"/*.java")
+			case "darwin", "linux":
+				// if *taPkgPtr {
+				// 	exitCode = run.CompileJava("javac", "-encoding", "UTF-8", "-cp", "./"+folderName+"/src", "-d", "./"+folderName+"/out", "./"+folderName+"/src"+"/Test.java")
+				// } else {
+				// 	exitCode = run.CompileJava("/bin/sh", "-c", "javac -encoding UTF-8 "+folderName+"/src/*.java")
+				// }
+				exitCode = run.CompileJava("/bin/sh", "-c", "javac -encoding UTF-8 -cp ./"+folderName+"/src -d ./"+folderName+"/out ./"+folderName+"/src/*.java")
+			}
+			// exitCode := run.CompileJava("javac", "-encoding", "UTF-8", "-cp", "./"+folderName+"/src", "-d", "./"+folderName+"/out", "./"+folderName+"/src"+"/Test.java")
 			if exitCode != 0 {
 				fmt.Println("Compile Error!")
 				judge.GradeUploadFormal(num, sid, name, "testcase", -3, *tagPtr)

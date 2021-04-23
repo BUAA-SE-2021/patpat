@@ -25,3 +25,5 @@ mysql.yaml
 bin
 1
 batch_judge.py
+test
+*.DS_Store
