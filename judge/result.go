@@ -90,6 +90,7 @@ func TaJudgeReportGen(reportName string, runStatus int, compareResult int, small
 		} else if compareResult == -2 {
 			content += "实际输出行数 > 期望输出行数。\n\n"
 		} else {
+			content += "### 测试用例\n\n```java\n" + testInputList[wrongOutputPos] + "\n```\n\n"
 			content += "### 期望输出行\n\n```java\n" + testOutputLines[wrongOutputPos] + "\n```\n\n"
 			content += "### 实际输出行\n\n```java\n" + actualOutputLines[wrongOutputPos] + "\n```\n"
 		}
