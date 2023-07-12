@@ -90,8 +90,16 @@ func TaJudgeReportGen(reportName string, runStatus int, compareResult int, small
 		} else if compareResult == -2 {
 			content += "实际输出行数 > 期望输出行数。\n\n"
 		} else {
-			content += "### 期望输出行\n\n```java\n" + testOutputLines[wrongOutputPos] + "\n```\n\n"
-			content += "### 实际输出行\n\n```java\n" + actualOutputLines[wrongOutputPos] + "\n```\n"
+			expectOutput := testOutputLines[wrongOutputPos]
+			if len(expectOutput) > 30 {
+				expectOutput = expectOutput[:30] + "... (To be continued)"
+			}
+			actualOutput := actualOutputLines[wrongOutputPos]
+			if len(actualOutput) > 30 {
+				actualOutput = actualOutput[:30] + "... (To be continued)"
+			}
+			content += "### 期望输出行\n\n```java\n" + expectOutput + "\n```\n\n"
+			content += "### 实际输出行\n\n```java\n" + actualOutput + "\n```\n"
 		}
 	}
 	if err := os.WriteFile(reportName+"_result"+".md", []byte(content), 0644); err != nil {
