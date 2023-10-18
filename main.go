@@ -225,7 +225,7 @@ func PrintBanner(title string) {
 	}
 
 	fmt.Print(strings.Repeat("=", extra))
-	fmt.Print(" " + title + " ")
+	fmt.Print(" \033[33m" + title + "\033[0m ")
 	fmt.Println(strings.Repeat("=", 80-extra-2-len(title)))
 }
 
@@ -234,21 +234,21 @@ func GradeToString(grade int) string {
 	switch grade {
 	case 1:
 		// Green
-		return "\033[32mAC\033[0m"
+		return "\033[92mAC\033[0m"
 	case -1:
 		// Blue
-		return "\033[34mTLE\033[0m"
+		return "\033[36mTLE\033[0m"
 	case -2:
 		// Red
-		return "\033[31mWA\033[0m"
+		return "\033[91mWA\033[0m"
 	case -3:
 		// Yellow
 		return "\033[33mCE\033[0m"
 	case -4:
 		// Magenta
-		return "\033[35mRE\033[0m"
+		return "\033[95mRE\033[0m"
 	default:
 		// Skyblue
-		return "\033[36mN/A\033[0m"
+		return "\033[96mN/A\033[0m"
 	}
 }
