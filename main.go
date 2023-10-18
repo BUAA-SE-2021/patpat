@@ -45,16 +45,24 @@ func main() {
 		paramList := strings.Split(folderName, "-")
 		num, err := strconv.Atoi(paramList[0])
 		if err != nil {
-			panic("Cannot parse num!")
+			fmt.Println("请确保文件夹命名为 'num-sid-name' 的格式!")
+			return
+			// panic("Cannot parse num!")
 		}
 		sid, err := strconv.Atoi(paramList[1])
 		if err != nil {
-			panic("Cannot parse sid!")
+			fmt.Println("请确保文件夹命名为 'num-sid-name' 的格式!")
+			return
+			// panic("Cannot parse sid!")
 		}
 		name := paramList[2]
-		fmt.Println("Lab:", num, "SID:", sid, "Name:", name)
+		fmt.Println("Lab: " + strconv.Itoa(num) + " | SID: " + strconv.Itoa(sid) + " | Name: " + name)
 		tests := initialize.FetchJudgeConfig("test/judge.yaml")
-		fmt.Println("Test cases:", tests)
+		fmt.Println("Test cases:")
+		for _, t := range tests {
+			fmt.Println("\t" + t)
+		}
+
 		var exitCode int
 		switch goos {
 		case "windows":
@@ -78,10 +86,15 @@ func main() {
 				judge.GradeUpload(num, sid, name, "testcase", -3)
 			}
 		} else {
-			fmt.Println("您本次自测的评测情况如下: (AC: 1, TLE: -1, WA: -2, CE: -3, RE: -4)")
+			fmt.Println(strings.Repeat("_", 80))
+			fmt.Println()
+			fmt.Println("您本次自测的评测情况如下: ")
 			for _, t := range tests {
 				testName, testData := initialize.FetchTestCase("test/" + t)
-				fmt.Println(testName)
+
+				fmt.Println()
+				PrintBanner(testName)
+
 				testInputList, testInput, testOutputLines, testOutput, mapTable := initialize.ParseTestData(testData)
 				// var runStatus int
 				// var actualOutput string
@@ -93,7 +106,7 @@ func main() {
 				// }
 				runStatus, actualOutput, actualOutputLines := run.RunJava(2, testInput, "java", "-classpath", "./"+folderName+"/out", "Test")
 				compareResult, smallerLen, wrongOutputPos := judge.Compare(testOutputLines, actualOutputLines, mapTable)
-				resultMessage := "Num = " + strconv.Itoa(num) + ", 评测点 = " + t[0:len(t)-5] + ", Grade = " + strconv.Itoa(judge.CalcGrade(runStatus, compareResult))
+				resultMessage := "Num = " + strconv.Itoa(num) + ", 评测点 = " + t[0:len(t)-5] + ", Grade = " + GradeToString(judge.CalcGrade(runStatus, compareResult))
 				fmt.Println(resultMessage)
 				judge.ReportGen(t[0:len(t)-5], runStatus, compareResult, smallerLen, wrongOutputPos, testInputList, testOutputLines, actualOutputLines, testOutput, actualOutput)
 				if *onlineModePtr {
@@ -109,20 +122,25 @@ func main() {
 		paramList := strings.Split(folderName, "-")
 		num, err := strconv.Atoi(paramList[0])
 		if err != nil {
-			panic("Cannot parse num!")
+			fmt.Println("请确保文件夹命名为 'num-sid-name' 的格式!")
+			return
+			// panic("Cannot parse num!")
 		}
 		sid, err := strconv.Atoi(paramList[1])
 		if err != nil {
-			panic("Cannot parse sid!")
+			fmt.Println("请确保文件夹命名为 'num-sid-name' 的格式!")
+			return
+			// panic("Cannot parse sid!")
 		}
 		name := paramList[2]
-		fmt.Println("Lab:", num, "SID:", sid, "Name:", name)
+		fmt.Println("Lab: " + strconv.Itoa(num) + " | SID: " + strconv.Itoa(sid) + " | Name: " + name)
 		if v1.Login(sid, pwd) {
 			formalTestCases := initialize.FetchFormalTestCase(num)
-			fmt.Print("Test cases: ")
+			fmt.Println("Test cases:")
 			for _, formalTestCase := range formalTestCases {
-				fmt.Print(formalTestCase.FileName, " ")
+				fmt.Println("\t" + formalTestCase.FileName)
 			}
+
 			fmt.Println()
 			var exitCode int
 			switch goos {
@@ -146,11 +164,16 @@ func main() {
 				fmt.Println("Compile Error!")
 				judge.GradeUploadFormal(num, sid, name, "testcase", -3, *tagPtr)
 			} else {
-				fmt.Println("您本次黑盒测试的评测情况如下: (AC: 1, TLE: -1, WA: -2, CE: -3, RE: -4)")
+				fmt.Println(strings.Repeat("_", 80))
+				fmt.Println()
+				fmt.Println("您本次黑盒测试的评测情况如下：")
 				for _, t := range formalTestCases {
 					_, _, testName, testData := initialize.ParseFormalTestCase(t)
 					// testName, testData := initialize.FetchTestCase("test/" + t)
-					fmt.Println(testName)
+
+					fmt.Println()
+					PrintBanner(testName)
+
 					testInputList, testInput, testOutputLines, testOutput, mapTable := initialize.ParseTestData(testData)
 					// var runStatus int
 					// var actualOutput string
@@ -162,7 +185,7 @@ func main() {
 					// }
 					runStatus, actualOutput, actualOutputLines := run.RunJava(2, testInput, "java", "-classpath", "./"+folderName+"/out", "Test")
 					compareResult, smallerLen, wrongOutputPos := judge.Compare(testOutputLines, actualOutputLines, mapTable)
-					resultMessage := "Num = " + strconv.Itoa(num) + ", 评测点 = " + t.FileName + ", Grade = " + strconv.Itoa(judge.CalcGrade(runStatus, compareResult))
+					resultMessage := "Num = " + strconv.Itoa(num) + ", 评测点 = " + t.FileName + ", Grade = " + GradeToString(judge.CalcGrade(runStatus, compareResult))
 					fmt.Println(resultMessage)
 					judge.TaJudgeReportGen(t.FileName, runStatus, compareResult, smallerLen, wrongOutputPos, testInputList, testOutputLines, actualOutputLines, testOutput, actualOutput)
 					judge.GradeUploadFormal(num, sid, name, t.FileName, judge.CalcGrade(runStatus, compareResult), *tagPtr)
@@ -190,5 +213,42 @@ func main() {
 		}
 	default:
 		fmt.Println("Expected 'stu' or 'ta' or 'reg' or 'query' subcommands!")
+	}
+
+	fmt.Println()
+}
+
+func PrintBanner(title string) {
+	extra := int((80 - 2 - len(title)) / 2)
+	if extra < 0 {
+		extra = 0
+	}
+
+	fmt.Print(strings.Repeat("=", extra))
+	fmt.Print(" " + title + " ")
+	fmt.Println(strings.Repeat("=", 80-extra-2-len(title)))
+}
+
+// (AC: 1, TLE: -1, WA: -2, CE: -3, RE: -4)
+func GradeToString(grade int) string {
+	switch grade {
+	case 1:
+		// Green
+		return "\033[32mAC\033[0m"
+	case -1:
+		// Blue
+		return "\033[34mTLE\033[0m"
+	case -2:
+		// Red
+		return "\033[31mWA\033[0m"
+	case -3:
+		// Yellow
+		return "\033[33mCE\033[0m"
+	case -4:
+		// Magenta
+		return "\033[35mRE\033[0m"
+	default:
+		// Skyblue
+		return "\033[36mN/A\033[0m"
 	}
 }

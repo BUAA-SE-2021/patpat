@@ -30,5 +30,12 @@ func Compare(testOutputLines []string, actualOutputLines []string, mapTable []in
 	} else if lenActual > lenTest {
 		compareResult = -2
 	}
+
+	// 2023/10/17 TS:
+	// If the actual output only different from the standard output in line number,
+	// then this -1 (wrongOutputPos) will cause runtime error (index out of range [-1])
+	// when we try to print the wrong output line.
+	// The solution is to check this -1 in report generation. :)
+
 	return compareResult, smallerLen, -1
 }

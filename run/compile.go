@@ -10,6 +10,7 @@ import (
 )
 
 func CompileJava(name string, args ...string) (exitCode int) {
+
 	// log.Println("run command:", name, args)
 	var outBuf, errBuf bytes.Buffer
 	cmd := exec.Command(name, args...)

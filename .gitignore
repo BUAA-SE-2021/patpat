@@ -27,3 +27,4 @@ bin
 batch_judge.py
 test
 *.DS_Store
+config.txt

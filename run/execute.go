@@ -50,13 +50,13 @@ func RunJava(timeout int, testInput string, command string, args ...string) (int
 		if err := cmd.Process.Kill(); err != nil {
 			panic("failed to kill: " + err.Error())
 		}
-		fmt.Println("timeout reached, process killed")
+		fmt.Println("\ttimeout reached, process killed")
 		runStatus = 1 // TLE
 	case err := <-done:
 		if err != nil {
 			close(done)
 			// panic("process done, with error: " + err.Error())
-			fmt.Println("process done, with error: " + err.Error())
+			fmt.Println("\tprocess done, with error: " + err.Error())
 			runStatus = 2 // error when running
 		}
 		fmt.Println("END RUN JAVA")

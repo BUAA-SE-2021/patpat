@@ -1,7 +1,8 @@
 package initialize
 
 import (
-	_ "embed"
+	// _ "embed"
+	"fmt"
 	"io"
 	"os"
 	"patpat/global"
@@ -40,15 +41,18 @@ func FetchJudgeConfig(configAddr string) (tests []string) {
 	t := JudgeConfig{}
 	fin, err := os.Open(configAddr)
 	if err != nil {
+		fmt.Println("Failed to open judge config file!")
 		panic(err)
 	}
 	cin, _ := io.ReadAll(fin)
 	err = yaml.Unmarshal([]byte(cin), &t)
 	if err != nil {
+		fmt.Println("Failed to parse judge config file!")
 		panic(err)
 	}
 
 	if len(t.Tests) == 0 {
+		fmt.Println("No test cases!")
 		panic("No test cases!")
 	}
 
@@ -121,7 +125,11 @@ func ParseTestData(testData *[][]string) (testInputList []string, testInput stri
 	return testInputList, testInput, testOutputLines, testOutput, mapTable
 }
 
-//go:embed mysql.yaml
+// 2023/10/18 TS:
+// The following code is for embedding the MySQL config file into the binary file.
+// Please delete the sensitive information before committing!
+//
+// That is, only leave this declaration:
 var mySQLyaml []byte
 
 func FetchMySQLConfig() (host string, port string, username string, password string, db string) {
