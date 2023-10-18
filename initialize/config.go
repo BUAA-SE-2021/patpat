@@ -78,22 +78,24 @@ func ParseFormalTestCase(formalTestCase FormalTestCase) (num int, fileName strin
 	return num, fileName, name, testData
 }
 
-func FetchTestCase(addr string) (name string, testData *[][]string) {
+func FetchTestCase(addr string) (name string, testData *[][]string, err error) {
 	t := TestCase{}
 
 	fin, err := os.Open(addr)
 	if err != nil {
-		panic(err)
+		// panic(err)
+		return "", nil, err
 	}
 	cin, _ := io.ReadAll(fin)
 	err = yaml.Unmarshal([]byte(cin), &t)
 	if err != nil {
-		panic(err)
+		// panic(err)
+		return "", nil, err
 	}
 
 	name = t.Name
 	testData = &t.Data
-	return name, testData
+	return name, testData, nil
 }
 
 func ParseTestData(testData *[][]string) (testInputList []string, testInput string, testOutputLines []string, testOutput string, mapTable []int) {

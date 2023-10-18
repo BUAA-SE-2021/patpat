@@ -90,9 +90,16 @@ func main() {
 			fmt.Println()
 			fmt.Println("您本次自测的评测情况如下: ")
 			for _, t := range tests {
-				testName, testData := initialize.FetchTestCase("test/" + t)
-
 				fmt.Println()
+
+				testName, testData, err := initialize.FetchTestCase("test/" + t)
+				if err != nil {
+					fmt.Println("Cannot fetch test case: " + t)
+					fmt.Println("Caused by:")
+					fmt.Println(err)
+					continue
+				}
+
 				PrintBanner(testName)
 
 				testInputList, testInput, testOutputLines, testOutput, mapTable := initialize.ParseTestData(testData)
